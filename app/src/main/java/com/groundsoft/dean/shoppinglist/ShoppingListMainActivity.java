@@ -49,15 +49,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         colors[0] = Color.parseColor("#559966CC");
         colors[1] = Color.parseColor("#55336699");
 
-        LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
+        //LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
 
-
+        ListView lv = (ListView) findViewById(R.id.mainlist);
 
         LayoutInflater ltInflater = getLayoutInflater();
 
         for (int i = 0; i < name.length; i++) {
             Log.d("myLogs", "i = " + i);
-            View item = ltInflater.inflate(R.layout.list_item, linLayout, false);
+            View item = ltInflater.inflate(R.layout.list_item, lv, false);
             TextView tvName = (TextView) item.findViewById(R.id.tvName);
             tvName.setText(name[i]);
             TextView tvPosition = (TextView) item.findViewById(R.id.tvPosition);
@@ -66,7 +66,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             tvSalary.setText("Оклад: " + String.valueOf(salary[i]));
             item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
-            linLayout.addView(item);
+            lv.addView(item);
         }
 
     }
