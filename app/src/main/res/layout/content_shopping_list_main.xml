@@ -9,9 +9,18 @@
     tools:context="com.groundsoft.dean.shoppinglist.ShoppingListMainActivity"
     tools:showIn="@layout/activity_shopping_list_main">
 
-    <ListView
-        android:id="@+id/mainlist"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:clickable="true">
+
+        <LinearLayout
+            android:id="@+id/mainlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

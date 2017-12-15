@@ -15,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Date;
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
@@ -49,15 +52,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         colors[0] = Color.parseColor("#559966CC");
         colors[1] = Color.parseColor("#55336699");
 
-        //LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
+        LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
 
-        ListView lv = (ListView) findViewById(R.id.mainlist);
+        //ListView lv = (ListView) findViewById(R.id.mainlist);
 
         LayoutInflater ltInflater = getLayoutInflater();
 
         for (int i = 0; i < name.length; i++) {
             Log.d("myLogs", "i = " + i);
-            View item = ltInflater.inflate(R.layout.list_item, lv, false);
+            View item = ltInflater.inflate(R.layout.list_item, linLayout, false);
             TextView tvName = (TextView) item.findViewById(R.id.tvName);
             tvName.setText(name[i]);
             TextView tvPosition = (TextView) item.findViewById(R.id.tvPosition);
@@ -66,8 +69,27 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             tvSalary.setText("Оклад: " + String.valueOf(salary[i]));
             item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
-            lv.addView(item);
+            linLayout.addView(item);
         }
+
+    }
+
+    public void addList (View v){
+        //Toast.makeText(this,"text", Toast.LENGTH_LONG).show();
+
+        SQLite db = new SQLite(this);
+
+        //(Integer)(System.currentTimeMillis() / 1000L)
+
+        //db.addListItem("test0", 123);
+
+        TextView tv = (TextView)findViewById(R.id.textView4);
+
+        ListItem li = db.getListItem(0);
+
+        tv.setText(li.listname + " " + li.date);
+
+        //db.close();
 
     }
 
