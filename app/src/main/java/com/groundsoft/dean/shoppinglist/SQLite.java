@@ -57,28 +57,28 @@ public class SQLite extends SQLiteOpenHelper {
     }
 
     public void fill() {
-        for (int i=0; i<=20;i++) {
-            addList("List " + i, (int)(long)(System.currentTimeMillis() / 1000));
+        for (int i = 0; i <= 20; i++) {
+            addList("List " + i, (int) (long) (System.currentTimeMillis() / 1000));
         }
 
-        for (int i=0; i<=5;i++) {
-            addItem (20,"Item of list 20 #" + i, 0,1);
+        for (int i = 0; i <= 5; i++) {
+            addItem(20, "Item of list 20 #" + i, 0, 1);
         }
 
-        for (int i=0; i<=5;i++) {
-            addItem (19,"Item of list 19 #" + i, 0,1);
+        for (int i = 0; i <= 5; i++) {
+            addItem(19, "Item of list 19 #" + i, 0, 1);
         }
 
-        for (int i=0; i<=5;i++) {
-            addItem (18,"Item of list 18 #" + i, 0,1);
+        for (int i = 0; i <= 5; i++) {
+            addItem(18, "Item of list 18 #" + i, 0, 1);
         }
 
-        for (int i=0; i<=5;i++) {
-            addItem (17,"Item of list 17 #" + i, 0,1);
+        for (int i = 0; i <= 5; i++) {
+            addItem(17, "Item of list 17 #" + i, 0, 1);
         }
 
-        for (int i=0; i<=5;i++) {
-            addItem (16,"Item of list 16 #" + i, 0,1);
+        for (int i = 0; i <= 5; i++) {
+            addItem(16, "Item of list 16 #" + i, 0, 1);
         }
     }
 
@@ -101,7 +101,7 @@ public class SQLite extends SQLiteOpenHelper {
     public String getFirstItems(Integer listid, Integer limit) {
         String res = "";
         ArrayList items = new ArrayList<Items>();
-        String query = "select * from " + TABLE_ITEMS + " limit " + limit;
+        String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_FKEY_ID + " = " + listid + " limit " + limit;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -114,8 +114,6 @@ public class SQLite extends SQLiteOpenHelper {
             items.add(item);
             res += cursor.getString(2) + " ";
         }
-
-
 
 
         cursor.close();
@@ -171,7 +169,7 @@ public class SQLite extends SQLiteOpenHelper {
                 new String[]{TABLE_LISTS_KEY_ID, TABLE_LISTS_KEY_NAME, TABLE_LISTS_KEY_DATE},
                 TABLE_LISTS_KEY_ID + "=" + id,
                 //new String[]{String.valueOf(id)},
-                null, null, null, null);  //date desc
+                null, null, null, null);
 
         Lists li = new Lists();
 
@@ -190,7 +188,7 @@ public class SQLite extends SQLiteOpenHelper {
     public ArrayList<Lists> getAllLists() {
         ArrayList listitems = new ArrayList<Lists>();
 
-        String query = "select * from " + TABLE_LISTS;
+        String query = "select * from " + TABLE_LISTS + " order by date desc";  //id desc date desc
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 

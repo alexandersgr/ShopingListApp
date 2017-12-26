@@ -1,5 +1,6 @@
 package com.groundsoft.dean.shoppinglist;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,18 +13,19 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
-    String[] name = { "Иван", "Марья", "Петр", "Антон", "Даша", "Борис",
-            "Костя", "Игорь" };
-    String[] position = { "Программер", "Бухгалтер", "Программер",
-            "Программер", "Бухгалтер", "Директор", "Программер", "Охранник" };
-    int salary[] = { 13000, 10000, 13000, 13000, 10000, 15000, 13000, 8000 };
-
     int[] colors = new int[2];
-
+    private View.OnClickListener listOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            listOnClick(v);
+        }
+    };;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,6 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +45,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         });
 */
 
-        colors[0] = Color.parseColor("#559966CC");
-        colors[1] = Color.parseColor("#55336699");
+        colors[0] = Color.parseColor("#ffffff"); //559966CC
+        colors[1] = Color.parseColor("#cccccc"); //55336699
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
 
@@ -64,20 +65,39 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
             TextView listName = (TextView) item.findViewById(R.id.listName);
             listName.setText(lists.get(i).listname);
+            listName.setTag(lists.get(i).id);
 
             TextView listDate = (TextView) item.findViewById(R.id.listDate);
-            listDate.setText("Дата: " + lists.get(i).date);
+            long dv = Long.valueOf(lists.get(i).date)*1000;// its need to be in milisecond
+            Date df = new java.util.Date(dv);
+            String vv = new SimpleDateFormat("H:m dd MMM yy").format(df);
+            listDate.setText(vv);
 
             TextView listItems = (TextView) item.findViewById(R.id.listItems);
-            listItems.setText(db.getFirstItems(i,3));
+            listItems.setText(db.getFirstItems(lists.get(i).id,3));
 
             //item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
+
+            item.setOnClickListener(listOnClick);
 
             linLayout.addView(item);
         }
 
         db.close();
+
+    }
+
+    public void listOnClick (View view)  {
+        TextView listName = (TextView) view.findViewById(R.id.listName);
+
+        TextView tv = (TextView)findViewById(R.id.textView4);
+        tv.setText(listName.getTag().toString());
+
+
+        Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
+        myIntent.putExtra("listid", (Integer)listName.getTag()); //Optional parameters
+        ShoppingListMainActivity.this.startActivity(myIntent);
 
     }
 
