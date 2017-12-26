@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -46,7 +45,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 */
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
-        colors[1] = Color.parseColor("#cccccc"); //55336699
+        colors[1] = Color.parseColor("#eeeeee"); //55336699
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
 
@@ -61,7 +60,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         for (int i = 0; i < lists.size(); i++) {
             //Log.d("myLogs", "i = " + i);
 
-            View item = ltInflater.inflate(R.layout.list_item, linLayout, false);
+            View item = ltInflater.inflate(R.layout.lists, linLayout, false);
 
             TextView listName = (TextView) item.findViewById(R.id.listName);
             listName.setText(lists.get(i).listname);

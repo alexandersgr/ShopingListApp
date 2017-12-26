@@ -14,7 +14,7 @@ public class SQLite extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "com.groundsoft.dean.shoppinglist.db";
 
-    private static final String TABLE_LISTS = "Lists";
+    private static final String TABLE_LISTS = "lists";
     private static final String TABLE_LISTS_KEY_ID = "id";
     private static final String TABLE_LISTS_KEY_NAME = "name";
     private static final String TABLE_LISTS_KEY_DATE = "date";
@@ -22,6 +22,7 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_ITEMS = "Items";
     private static final String TABLE_ITEMS_KEY_ID = "id";
     private static final String TABLE_ITEMS_FKEY_ID = "listid";
+    private static final String TABLE_ITEMS_CATEGORY_ID = "categoryid";
     private static final String TABLE_ITEMS_KEY_NAME = "name";
     private static final String TABLE_ITEMS_KEY_PRICE = "price";
     private static final String TABLE_ITEMS_KEY_QUANTITY = "quantity";
@@ -42,6 +43,7 @@ public class SQLite extends SQLiteOpenHelper {
         String query2 = "Create table " + TABLE_ITEMS + " (" +
                 TABLE_ITEMS_KEY_ID + " integer primary key, " +
                 TABLE_ITEMS_FKEY_ID + " integer, " +
+                TABLE_ITEMS_CATEGORY_ID + " integer, " +
                 TABLE_ITEMS_KEY_NAME + " text, " +
                 TABLE_ITEMS_KEY_PRICE + " integer, " +
                 TABLE_ITEMS_KEY_QUANTITY + " integer, " +
@@ -57,7 +59,7 @@ public class SQLite extends SQLiteOpenHelper {
     }
 
     public void fill() {
-        for (int i = 0; i <= 20; i++) {
+        for (int i = 1; i <= 21; i++) {
             addList("List " + i, (int) (long) (System.currentTimeMillis() / 1000));
         }
 
@@ -123,7 +125,7 @@ public class SQLite extends SQLiteOpenHelper {
     public ArrayList<Items> getItems(Integer listid) {
         ArrayList items = new ArrayList<Items>();
 
-        String query = "select * from " + TABLE_ITEMS;
+        String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_FKEY_ID + " = " + listid;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
