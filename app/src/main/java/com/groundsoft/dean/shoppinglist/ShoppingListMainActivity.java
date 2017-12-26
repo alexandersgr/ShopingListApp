@@ -2,8 +2,6 @@ package com.groundsoft.dean.shoppinglist;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,13 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
@@ -58,19 +53,31 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         LayoutInflater ltInflater = getLayoutInflater();
 
-        for (int i = 0; i < name.length; i++) {
-            Log.d("myLogs", "i = " + i);
+        SQLite db = new SQLite(this);
+
+        ArrayList<Lists> lists = db.getAllLists();
+
+        for (int i = 0; i < lists.size(); i++) {
+            //Log.d("myLogs", "i = " + i);
+
             View item = ltInflater.inflate(R.layout.list_item, linLayout, false);
-            TextView tvName = (TextView) item.findViewById(R.id.tvName);
-            tvName.setText(name[i]);
-            TextView tvPosition = (TextView) item.findViewById(R.id.tvPosition);
-            tvPosition.setText("Должность: " + position[i]);
-            TextView tvSalary = (TextView) item.findViewById(R.id.tvSalary);
-            tvSalary.setText("Оклад: " + String.valueOf(salary[i]));
-            item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+
+            TextView listName = (TextView) item.findViewById(R.id.listName);
+            listName.setText(lists.get(i).listname);
+
+            TextView listDate = (TextView) item.findViewById(R.id.listDate);
+            listDate.setText("Дата: " + lists.get(i).date);
+
+            TextView listItems = (TextView) item.findViewById(R.id.listItems);
+            listItems.setText(db.getFirstItems(i,3));
+
+            //item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
+
             linLayout.addView(item);
         }
+
+        db.close();
 
     }
 
@@ -79,17 +86,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         SQLite db = new SQLite(this);
 
-        //(Integer)(System.currentTimeMillis() / 1000L)
-
-        //db.addListItem("test0", 123);
+        //db.fill();
 
         TextView tv = (TextView)findViewById(R.id.textView4);
 
-        ListItem li = db.getListItem(0);
+        Lists li = db.getList(2);
 
-        tv.setText(li.listname + " " + li.date);
-
-        //db.close();
+           tv.setText(li.id + " " +li.listname + " " + li.date);
+        //li.listname + " " + li.date
+        db.close();
 
     }
 
