@@ -107,20 +107,22 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         SQLite db = new SQLite(this);
 
-
-        //SQLiteDatabase sqLiteDatabase = null;
-        //db.onUpgrade(sqLiteDatabase,1,1);
-        //db.fill();
-
         TextView tv = (TextView) findViewById(R.id.textView4);
-
-        //Lists li = db.getList(2);
         DefItems di = db.getDefItem(3);
         tv.setText(di.defItemId + " " + di.defItemName + " " + di.defItemOrder);
-        //li.listname + " " + li.date
 
         db.close();
 
+    }
+
+    public void fillDb (View v){
+        SQLite db = new SQLite(this);
+
+        //SQLiteDatabase sqLiteDatabase = null;
+        //db.onUpgrade(sqLiteDatabase,1,1);
+
+        db.fill();
+        db.close();
     }
 
     @Override

@@ -23,16 +23,25 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="false" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="9f97d30e-f4d8-4034-8561-0282f1854259">
+        <schema name="main" object-types="column, constraint, index, table, dataset trigger, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="9f97d30e-f4d8-4034-8561-0282f1854259">
-      <console name="ShopList.db" type="STANDARD" />
+      <console name="ShopList.db" type="STANDARD"><![CDATA[Create table categories (id integer primary key, name text, defitorder integer)
+select * from "categories"]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.ListItems" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.categories" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.android_metadata" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.defaultitems" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.Items" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.lists" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -82,7 +91,7 @@
           <password value="" />
         </database>
         <properties>
-          <auto-commit value="false" />
+          <auto-commit value="true" />
         </properties>
         <ssh-settings>
           <active value="false" />
@@ -453,7 +462,7 @@
         <debug-execution-timeout value="600" />
         <focus-result value="false" />
         <prompt-execution value="false" />
-        <target-connection value="ASK" />
+        <target-connection value="MAIN" />
       </statement-execution>
       <script-execution>
         <command-line-interfaces>

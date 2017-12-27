@@ -31,12 +31,12 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_CATEGORIES = "categories";
     private static final String TABLE_CATEGORIES_KEY_ID = "id";
     private static final String TABLE_CATEGORIES_KEY_NAME = "name";
-    private static final String TABLE_CATEGORIES_KEY_ORDER = "order";
+    private static final String TABLE_CATEGORIES_KEY_ORDER = "catorder";
 
-    private static final String TABLE_DEFITEMS = "categories";
+    private static final String TABLE_DEFITEMS = "defaultitems";
     private static final String TABLE_DEFITEMS_KEY_ID = "id";
     private static final String TABLE_DEFITEMS_KEY_NAME = "name";
-    private static final String TABLE_DEFITEMS_KEY_ORDER = "order";
+    private static final String TABLE_DEFITEMS_KEY_ORDER = "defitorder";
 
     SQLite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,6 +71,7 @@ public class SQLite extends SQLiteOpenHelper {
                 TABLE_DEFITEMS_KEY_NAME + " text, " +
                 TABLE_DEFITEMS_KEY_ORDER + " integer)";
         sqLiteDatabase.execSQL(query4);
+
     }
 
     @Override
@@ -80,13 +81,15 @@ public class SQLite extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("drop table if exists " + TABLE_CATEGORIES);
         sqLiteDatabase.execSQL("drop table if exists " + TABLE_DEFITEMS);
 
-
         onCreate(sqLiteDatabase);
     }
 
     public void fill() {
+        long x = System.currentTimeMillis() - 40000000;
         for (int i = 1; i <= 21; i++) {
-            addList("List " + i, (int) (long) (System.currentTimeMillis() / 1000));
+            addList("List " + i, (int) (long) (
+                    (x / 1000)+i*10000)
+            );
         }
 
         for (int i = 0; i <= 5; i++) {
@@ -258,11 +261,11 @@ public class SQLite extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             Items item = new Items();
-            item.name = cursor.getString(2);
-            item.quantity = cursor.getInt(4);
-            item.checked = cursor.getInt(5);
+            item.name = cursor.getString(3);
+            item.quantity = cursor.getInt(5);
+            item.checked = cursor.getInt(6);
             items.add(item);
-            res += cursor.getString(2) + " ";
+            res += cursor.getString(3) + " ";
         }
 
 
@@ -282,10 +285,10 @@ public class SQLite extends SQLiteOpenHelper {
             Items item = new Items();
             item.id = cursor.getInt(0);
             item.listid = cursor.getInt(1);
-            item.name = cursor.getString(2);
-            item.price = cursor.getInt(3);
-            item.quantity = cursor.getInt(4);
-            item.checked = cursor.getInt(5);
+            item.name = cursor.getString(3);
+            item.price = cursor.getInt(4);
+            item.quantity = cursor.getInt(5);
+            item.checked = cursor.getInt(6);
 
             items.add(item);
         }
