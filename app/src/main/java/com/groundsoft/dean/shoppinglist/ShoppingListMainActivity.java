@@ -1,6 +1,7 @@
 package com.groundsoft.dean.shoppinglist;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         public void onClick(View v) {
             listOnClick(v);
         }
-    };;
+    };
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +69,13 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             listName.setTag(lists.get(i).id);
 
             TextView listDate = (TextView) item.findViewById(R.id.listDate);
-            long dv = Long.valueOf(lists.get(i).date)*1000;// its need to be in milisecond
+            long dv = Long.valueOf(lists.get(i).date) * 1000;// its need to be in milisecond
             Date df = new java.util.Date(dv);
             String vv = new SimpleDateFormat("H:m dd MMM yy").format(df);
             listDate.setText(vv);
 
             TextView listItems = (TextView) item.findViewById(R.id.listItems);
-            listItems.setText(db.getFirstItems(lists.get(i).id,3));
+            listItems.setText(db.getFirstItems(lists.get(i).id, 3));
 
             //item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
@@ -87,32 +89,36 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     }
 
-    public void listOnClick (View view)  {
+    public void listOnClick(View view) {
         TextView listName = (TextView) view.findViewById(R.id.listName);
 
-        TextView tv = (TextView)findViewById(R.id.textView4);
+        TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(listName.getTag().toString());
 
 
         Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
-        myIntent.putExtra("listid", (Integer)listName.getTag()); //Optional parameters
+        myIntent.putExtra("listid", (Integer) listName.getTag()); //Optional parameters
         ShoppingListMainActivity.this.startActivity(myIntent);
 
     }
 
-    public void addList (View v){
+    public void addList(View v) {
         //Toast.makeText(this,"text", Toast.LENGTH_LONG).show();
 
         SQLite db = new SQLite(this);
 
+
+        //SQLiteDatabase sqLiteDatabase = null;
+        //db.onUpgrade(sqLiteDatabase,1,1);
         //db.fill();
 
-        TextView tv = (TextView)findViewById(R.id.textView4);
+        TextView tv = (TextView) findViewById(R.id.textView4);
 
-        Lists li = db.getList(2);
-
-           tv.setText(li.id + " " +li.listname + " " + li.date);
+        //Lists li = db.getList(2);
+        DefItems di = db.getDefItem(3);
+        tv.setText(di.defItemId + " " + di.defItemName + " " + di.defItemOrder);
         //li.listname + " " + li.date
+
         db.close();
 
     }
