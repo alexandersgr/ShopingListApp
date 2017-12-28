@@ -31,7 +31,8 @@ public class ItemsOfList extends AppCompatActivity {
         Intent intent = getIntent();
         int listid = intent.getIntExtra("listid", 0);
 
-        fillList(listid);
+        //fillList(listid);
+        categorizedList(listid);
     }
 
 
@@ -42,46 +43,33 @@ public class ItemsOfList extends AppCompatActivity {
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.itemsListLayout);
         LayoutInflater ltInflater = getLayoutInflater();
+        LayoutInflater ltInflater2 = getLayoutInflater();
 
         SQLite db = new SQLite(this);
 
         ArrayList<Items> lists = db.getItems(listid);
 
+        Integer currentItemCatId = -1;
+
+
         for (int i = 0; i < lists.size(); i++) {
 
-            View category = ltInflater.inflate(R.layout.categories, linLayout, false);
 
-            TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
-            textCategory.setText(((Categories) db.getCategory(lists.get(i).categoryid)).categoryName);
+            if (currentItemCatId != lists.get(i).categoryid) {
+                View category = ltInflater.inflate(R.layout.categories, linLayout, false);
 
-            while(true){
+                TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
+                Integer cid = lists.get(i).categoryid;
+                Categories cat = db.getCategory(cid);
+                String s = cat.categoryName;
+                textCategory.setText(s);
 
-                View item = ltInflater.inflate(R.layout.items, linLayout, false);
-                TextView itemName = (TextView) item.findViewById(R.id.itemName);
-                itemName.setText(lists.get(i).name);
-                itemName.setTag(lists.get(i).id);
-
-                CheckBox cb = (CheckBox) item.findViewById(R.id.checkBox);
-                cb.setTag(lists.get(i).id);
-                if (lists.get(i).checked == 1) {
-                    cb.setChecked(true);
-                } else {
-                    cb.setChecked(false);
-                }
-
-                item.setBackgroundColor(colors[i % 2]);
-
-                //item.setOnClickListener(listOnClick);
-
-                category.addView(item);
+                linLayout.addView(category);
             }
+
+            currentItemCatId = lists.get(i).categoryid;
         }
 
-
-        for (int i = 0; i < lists.size(); i++) {
-
-
-        }
 
         db.close();
     }

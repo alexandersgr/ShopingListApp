@@ -98,7 +98,7 @@ public class SQLite extends SQLiteOpenHelper {
         for (int n = 0; n <= 5; n++) {
             int b = n + 14;
             for (int i = 0; i <= 10; i++) {
-                addItemTest(b, (i % 4) * 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                addItemTest(b, (i % 4) + 1, "Item of list " + b + " #" + i, 0, 1, i % 2,
                         (int) (long) ((x / 1000) + i * 10000));
             }
         }
@@ -309,10 +309,13 @@ public class SQLite extends SQLiteOpenHelper {
             Items item = new Items();
             item.id = cursor.getInt(0);
             item.listid = cursor.getInt(1);
+            item.categoryid = cursor.getInt(2);
             item.name = cursor.getString(3);
             item.price = cursor.getInt(4);
             item.quantity = cursor.getInt(5);
             item.checked = cursor.getInt(6);
+            item.date = cursor.getInt(7);
+
 
             items.add(item);
         }

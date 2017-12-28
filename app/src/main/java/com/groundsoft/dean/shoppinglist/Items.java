@@ -8,6 +8,7 @@ public class Items {
     Integer price;
     String name;
     Integer checked;
+    Integer date;
 
     Items() {
     }
