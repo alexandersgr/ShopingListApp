@@ -27,6 +27,7 @@ public class SQLite extends SQLiteOpenHelper {
     private static final String TABLE_ITEMS_KEY_PRICE = "price";
     private static final String TABLE_ITEMS_KEY_QUANTITY = "quantity";
     private static final String TABLE_ITEMS_KEY_CHECKED = "checked";
+    private static final String TABLE_ITEMS_KEY_DATE = "date";
 
     private static final String TABLE_CATEGORIES = "categories";
     private static final String TABLE_CATEGORIES_KEY_ID = "id";
@@ -57,7 +58,8 @@ public class SQLite extends SQLiteOpenHelper {
                 TABLE_ITEMS_KEY_NAME + " text, " +
                 TABLE_ITEMS_KEY_PRICE + " integer, " +
                 TABLE_ITEMS_KEY_QUANTITY + " integer, " +
-                TABLE_ITEMS_KEY_CHECKED + " integer)";
+                TABLE_ITEMS_KEY_CHECKED + " integer, " +
+                TABLE_ITEMS_KEY_DATE + " integer)";
         sqLiteDatabase.execSQL(query2);
 
         String query3 = "Create table " + TABLE_CATEGORIES + " (" +
@@ -85,31 +87,20 @@ public class SQLite extends SQLiteOpenHelper {
     }
 
     public void fill() {
-        long x = System.currentTimeMillis() - 40000000;
+        long x = System.currentTimeMillis() - 60000000;
         for (int i = 1; i <= 21; i++) {
             addList("List " + i, (int) (long) (
-                    (x / 1000)+i*10000)
+                    (x / 1000) + i * 10000)
             );
         }
 
-        for (int i = 0; i <= 5; i++) {
-            addItem(20, "Item of list 20 #" + i, 0, 1);
-        }
 
-        for (int i = 0; i <= 5; i++) {
-            addItem(19, "Item of list 19 #" + i, 0, 1);
-        }
-
-        for (int i = 0; i <= 5; i++) {
-            addItem(18, "Item of list 18 #" + i, 0, 1);
-        }
-
-        for (int i = 0; i <= 5; i++) {
-            addItem(17, "Item of list 17 #" + i, 0, 1);
-        }
-
-        for (int i = 0; i <= 5; i++) {
-            addItem(16, "Item of list 16 #" + i, 0, 1);
+        for (int n = 0; n <= 5; n++) {
+            int b = n + 14;
+            for (int i = 0; i <= 10; i++) {
+                addItemTest(b, (i % 4) * 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                        (int) (long) ((x / 1000) + i * 10000));
+            }
         }
 
 
@@ -129,7 +120,6 @@ public class SQLite extends SQLiteOpenHelper {
         addCategory("Хлеб, выпечка, сладости", 140);
         addCategory("Электроника, бытовая техника", 150);
         addCategory("Другое", 9000);
-
 
 
         addDefItem("Батон", 10);
@@ -246,6 +236,23 @@ public class SQLite extends SQLiteOpenHelper {
         vals.put(TABLE_ITEMS_KEY_PRICE, price);
         vals.put(TABLE_ITEMS_KEY_QUANTITY, quantity);
         vals.put(TABLE_ITEMS_KEY_CHECKED, 0);
+
+        db.insert(TABLE_ITEMS, null, vals);
+        db.close();
+    }
+
+    public void addItemTest(Integer listid, Integer categoryid, String name, Integer price, Integer quantity, Integer checked, Integer date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues vals = new ContentValues();
+        vals.put(TABLE_ITEMS_LIST_ID, listid);
+        vals.put(TABLE_ITEMS_CATEGORY_ID, categoryid);
+
+        vals.put(TABLE_ITEMS_KEY_NAME, name);
+        vals.put(TABLE_ITEMS_KEY_PRICE, price);
+        vals.put(TABLE_ITEMS_KEY_QUANTITY, quantity);
+        vals.put(TABLE_ITEMS_KEY_CHECKED, checked);
+        vals.put(TABLE_ITEMS_KEY_DATE, date);
 
         db.insert(TABLE_ITEMS, null, vals);
         db.close();
