@@ -227,6 +227,19 @@ public class SQLite extends SQLiteOpenHelper {
 
     // ------------------------- Items -----------------------------//
 
+    public void updateItemCheckedStatus(Integer itemId, Integer checked) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "update " + TABLE_ITEMS +
+                " set " + TABLE_ITEMS_KEY_CHECKED + "=" + checked + " where " + TABLE_ITEMS_KEY_ID + " = " + itemId;
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        cursor.close();
+
+        db.close();
+    }
+
     public void addItem(Integer listid, String name, Integer price, Integer quantity) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -283,7 +296,11 @@ public class SQLite extends SQLiteOpenHelper {
     public ArrayList<Items> getItems(Integer listid) {
         ArrayList items = new ArrayList<Items>();
 
-        String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid;
+        //String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " order by " + TABLE_ITEMS_KEY_DATE + " desc";
+
+        String query = "select * from " + TABLE_ITEMS +
+                " where " + TABLE_ITEMS_LIST_ID + " = " + listid +
+                " order by " + TABLE_ITEMS_CATEGORY_ID + " desc, " + TABLE_ITEMS_KEY_DATE + " desc";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);

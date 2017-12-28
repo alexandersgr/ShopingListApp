@@ -31,8 +31,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="9f97d30e-f4d8-4034-8561-0282f1854259">
-      <console name="ShopList.db" type="STANDARD"><![CDATA[Create table categories (id integer primary key, name text, defitorder integer)
-select * from "categories"]]></console>
+      <console name="ShopList.db" type="STANDARD"><![CDATA[select * from "Items" where listid=18 order by categoryid desc,date desc]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
