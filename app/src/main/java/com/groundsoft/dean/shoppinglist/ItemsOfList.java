@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,13 +52,13 @@ public class ItemsOfList extends AppCompatActivity {
         ArrayList<Items> lists = db.getItems(listid);
 
         Integer currentItemCatId = -1;
-
+        View category = null;
 
         for (int i = 0; i < lists.size(); i++) {
 
 
             if (currentItemCatId != lists.get(i).categoryid) {
-                View category = ltInflater.inflate(R.layout.categories, linLayout, false);
+                category = ltInflater.inflate(R.layout.categories, linLayout, false);
 
                 TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
                 Integer cid = lists.get(i).categoryid;
@@ -64,8 +66,49 @@ public class ItemsOfList extends AppCompatActivity {
                 String s = cat.categoryName;
                 textCategory.setText(s);
 
+
+                ///////////
+                LinearLayout catlin = (LinearLayout) category.findViewById(R.id.itemsContainer);
+
+                while (true) {
+
+                    View item = ltInflater2.inflate(R.layout.items, catlin, false);
+
+                    TextView itemName = (TextView) item.findViewById(R.id.itemName);
+                    itemName.setText(lists.get(i).name);
+                    itemName.setTag(lists.get(i).id);
+
+                    CheckBox cb = (CheckBox) item.findViewById(R.id.checkBox);
+                    cb.setTag(lists.get(i).id);
+                    if (lists.get(i).checked == 1) {
+                        cb.setChecked(true);
+                    } else {
+                        cb.setChecked(false);
+                    }
+
+                    item.setBackgroundColor(colors[i % 2]);
+
+                    //item.setOnClickListener(listOnClick);
+
+                    catlin.addView(item);
+
+                    if (i<lists.size()-1){
+                        if(lists.get(i).categoryid!=lists.get(i+1).categoryid){
+                            break;
+                        }
+                        else{
+                            i+=1;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                ///////
+
                 linLayout.addView(category);
             }
+
+
 
             currentItemCatId = lists.get(i).categoryid;
         }

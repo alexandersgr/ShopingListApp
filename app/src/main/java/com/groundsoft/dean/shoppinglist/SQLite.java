@@ -98,7 +98,7 @@ public class SQLite extends SQLiteOpenHelper {
         for (int n = 0; n <= 5; n++) {
             int b = n + 14;
             for (int i = 0; i <= 10; i++) {
-                addItemTest(b, (i % 4) + 1, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                addItemTest(b, (i % 4)*10 + 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
                         (int) (long) ((x / 1000) + i * 10000));
             }
         }
@@ -203,11 +203,11 @@ public class SQLite extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Categories getCategory(Integer categoryId) {
+    public Categories getCategory(Integer categoryOrder) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_CATEGORIES,
                 new String[]{TABLE_CATEGORIES_KEY_ID, TABLE_CATEGORIES_KEY_NAME, TABLE_CATEGORIES_KEY_ORDER},
-                TABLE_CATEGORIES_KEY_ID + "=" + categoryId,
+                TABLE_CATEGORIES_KEY_ORDER + "=" + categoryOrder,
                 //new String[]{String.valueOf(id)},
                 null, null, null, null);
 
