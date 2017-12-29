@@ -50,6 +50,17 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             }
         });
 */
+        fillMainList();
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        fillMainList();
+    }
+
+    public void fillMainList(){
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -91,7 +102,6 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         }
 
         db.close();
-
     }
 
     public void listOnClick(View view) {
@@ -100,9 +110,12 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(listName.getTag().toString());
 
+        openListActivity((Integer) listName.getTag());
+    }
 
+    public void openListActivity(Integer listId){
         Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
-        myIntent.putExtra("listid", (Integer) listName.getTag()); //Optional parameters
+        myIntent.putExtra("listid", listId); //Optional parameters
         ShoppingListMainActivity.this.startActivity(myIntent);
 
     }
@@ -131,7 +144,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         alertDialogBuilder
                 //.setCancelable(false)
-                .setPositiveButton("OK",
+                .setPositiveButton(R.string.dialog_OK_btn,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 String name = String.valueOf(userInput.getText());
@@ -140,7 +153,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(R.string.dialog_Cancel_btn,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -162,6 +175,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(String.valueOf(res));
+
+        openListActivity((int)res);
 
     }
 
