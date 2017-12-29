@@ -328,15 +328,16 @@ public class SQLite extends SQLiteOpenHelper {
 
     // ------------------------- Lists -----------------------------//
 
-    public void addList(String name, Integer date) {
+    public long addList(String name, Integer date) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues vals = new ContentValues();
         vals.put(TABLE_LISTS_KEY_NAME, name);
         vals.put(TABLE_LISTS_KEY_DATE, date);
 
-        db.insert(TABLE_LISTS, null, vals);
+        long res = db.insert(TABLE_LISTS, null, vals);
         db.close();
+        return res;
     }
 
     public void addList(Lists li) {

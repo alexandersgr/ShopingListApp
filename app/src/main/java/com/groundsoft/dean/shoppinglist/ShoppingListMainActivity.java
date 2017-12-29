@@ -1,5 +1,8 @@
 package com.groundsoft.dean.shoppinglist;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -10,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -105,6 +110,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     public void addList(View v) {
         //Toast.makeText(this,"text", Toast.LENGTH_LONG).show();
 
+        /*
         SQLite db = new SQLite(this);
 
         TextView tv = (TextView) findViewById(R.id.textView4);
@@ -112,10 +118,54 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         tv.setText(di.defItemId + " " + di.defItemName + " " + di.defItemOrder);
 
         db.close();
+         */
+
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.dialog_add_list, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView.findViewById(R.id.newListName);
+
+        alertDialogBuilder
+                //.setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String name = String.valueOf(userInput.getText());
+                                if(!name.equals("")){
+                                    createAndShowNewList(name);
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
 
     }
 
-    public void fillDb (View v){
+    public void createAndShowNewList(String name){
+        SQLite db = new SQLite(this);
+
+        long res = db.addList(name,(int) (long) (System.currentTimeMillis()/ 1000));
+
+        db.close();
+
+        TextView tv = (TextView) findViewById(R.id.textView4);
+        tv.setText(String.valueOf(res));
+
+    }
+
+    public void fillDb(View v) {
         SQLite db = new SQLite(this);
 
         //SQLiteDatabase sqLiteDatabase = null;
