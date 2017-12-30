@@ -1,10 +1,10 @@
-package com.groundsoft.dean.shoppinglist;
+package com.groundsoft.dean.shoppinglist.Models;
 
-class Lists {
-    Integer id;
-    String listname;
-    Integer date;
-    String items;
+public class Lists {
+    public Integer id;
+    public String listname;
+    public Integer date;
+    public String items;
 
     public Lists() {
     }

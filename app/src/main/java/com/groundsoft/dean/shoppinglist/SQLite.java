@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.DefItems;
+import com.groundsoft.dean.shoppinglist.Models.Items;
+import com.groundsoft.dean.shoppinglist.Models.Lists;
+
 import java.util.ArrayList;
 
 
