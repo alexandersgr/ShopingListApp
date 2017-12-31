@@ -51,11 +51,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             }
         });
 */
-
-        Items it = new Items(this);
-        it.getFirstItems(1,1);
-
-        fillMainList();
+        //fillMainList();
 
     }
 
@@ -71,6 +67,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
+        linLayout.removeAllViews();
 
         //ListView lv = (ListView) findViewById(R.id.mainlist);
 
@@ -93,7 +90,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             TextView listDate = (TextView) item.findViewById(R.id.listDate);
             long dv = Long.valueOf(lists.get(i).date) * 1000;// its need to be in milisecond
             Date df = new java.util.Date(dv);
-            String vv = new SimpleDateFormat("H:m dd MMM yy").format(df);
+            String vv = new SimpleDateFormat("H:mm d MMM yy").format(df);
             listDate.setText(vv);
 
             TextView listItems = (TextView) item.findViewById(R.id.listItems);
