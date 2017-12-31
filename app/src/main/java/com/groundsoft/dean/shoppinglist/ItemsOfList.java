@@ -45,8 +45,10 @@ public class ItemsOfList extends AppCompatActivity {
         LayoutInflater ltInflater2 = getLayoutInflater();
 
         SQLite db = new SQLite(this);
+        Items it = new Items(this);
+        Categories cats = new Categories(this);
 
-        ArrayList<Items> lists = db.getItems(listid);
+        ArrayList<Items> lists = it.getItems(listid);
 
         Integer currentItemCatId = -1;
         View category = null;
@@ -59,7 +61,7 @@ public class ItemsOfList extends AppCompatActivity {
 
                 TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
                 Integer cid = lists.get(i).categoryid;
-                Categories cat = db.getCategory(cid);
+                Categories cat = cats.getCategory(cid);
                 String s = cat.categoryName;
                 textCategory.setText(s);
 
@@ -124,8 +126,9 @@ public class ItemsOfList extends AppCompatActivity {
         LayoutInflater ltInflater = getLayoutInflater();
 
         SQLite db = new SQLite(this);
+        Items it = new Items(this);
 
-        ArrayList<Items> lists = db.getItems(listid);
+        ArrayList<Items> lists = it.getItems(listid);
 
         for (int i = 0; i < lists.size(); i++) {
 
@@ -154,13 +157,10 @@ public class ItemsOfList extends AppCompatActivity {
     }
 
     public void checkedClick(View v) {
-        SQLite db = new SQLite(this);
 
-        //TODO: update checked state
         Integer itemId = (Integer) ((CheckBox) v).getTag();
-        db.updateItemCheckedStatus(itemId, ((CheckBox) v).isChecked() ? 1 : 0);
+        new Items(this).updateItemCheckedStatus(itemId, ((CheckBox) v).isChecked() ? 1 : 0);
 
-        db.close();
     }
 
 }

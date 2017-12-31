@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 
 import java.text.SimpleDateFormat;
@@ -49,6 +51,10 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             }
         });
 */
+
+        Items it = new Items(this);
+        it.getFirstItems(1,1);
+
         fillMainList();
 
     }
@@ -59,7 +65,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         fillMainList();
     }
 
-    public void fillMainList(){
+    public void fillMainList() {
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -71,6 +77,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         LayoutInflater ltInflater = getLayoutInflater();
 
         SQLite db = new SQLite(this);
+        Items it = new Items(this);
 
         ArrayList<Lists> lists = db.getAllLists();
 
@@ -90,7 +97,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             listDate.setText(vv);
 
             TextView listItems = (TextView) item.findViewById(R.id.listItems);
-            listItems.setText(db.getFirstItems(lists.get(i).id, 3));
+            listItems.setText(it.getFirstItems(lists.get(i).id, 3));
 
             //item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
@@ -112,7 +119,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         openListActivity((Integer) listName.getTag());
     }
 
-    public void openListActivity(Integer listId){
+    public void openListActivity(Integer listId) {
         Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
         myIntent.putExtra("listid", listId); //Optional parameters
         ShoppingListMainActivity.this.startActivity(myIntent);
@@ -147,7 +154,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 String name = String.valueOf(userInput.getText());
-                                if(!name.equals("")){
+                                if (!name.equals("")) {
                                     createAndShowNewList(name);
                                 }
                             }
@@ -165,27 +172,73 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     }
 
-    public void createAndShowNewList(String name){
+    public void createAndShowNewList(String name) {
         SQLite db = new SQLite(this);
 
-        long res = db.addList(name,(int) (long) (System.currentTimeMillis()/ 1000));
+        long res = db.addList(name, (int) (long) (System.currentTimeMillis() / 1000));
 
         db.close();
 
         TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(String.valueOf(res));
 
-        openListActivity((int)res);
+        openListActivity((int) res);
 
     }
 
     public void fillDb(View v) {
         SQLite db = new SQLite(this);
+        Items it = new Items(this);
+        Categories cat = new Categories(this);
 
         //SQLiteDatabase sqLiteDatabase = null;
         //db.onUpgrade(sqLiteDatabase,1,1);
 
-        db.fill();
+        long x = System.currentTimeMillis() - 60000000;
+        for (int i = 1; i <= 21; i++) {
+            db.addList("List " + i, (int) (long) (
+                    (x / 1000) + i * 10000)
+            );
+        }
+
+
+
+        for (int n = 0; n <= 5; n++) {
+            int b = n + 14;
+            for (int i = 0; i <= 10; i++) {
+                it.addItemTest(b, (i % 4) * 10 + 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                        (int) (long) ((x / 1000) + i * 10000));
+            }
+        }
+
+
+        cat.addCategory("Аксессуары", 10);
+        cat.addCategory("Алкоголь, табак", 20);
+        cat.addCategory("Бакалея", 30);
+        cat.addCategory("Замороженные продукты", 40);
+        cat.addCategory("Косметика, гигиена", 50);
+        cat.addCategory("Лекарства", 60);
+        cat.addCategory("Молочные продукты", 70);
+        cat.addCategory("Мясо, рыба, яйца", 80);
+        cat.addCategory("Напитки, соки", 90);
+        cat.addCategory("Обувь", 100);
+        cat.addCategory("Одежда", 110);
+        cat.addCategory("Товары для дома", 120);
+        cat.addCategory("Фрукты, овощи, соленья", 130);
+        cat.addCategory("Хлеб, выпечка, сладости", 140);
+        cat.addCategory("Электроника, бытовая техника", 150);
+        cat.addCategory("Другое", 9000);
+
+
+        db.addDefItem("Батон", 10);
+        db.addDefItem("Кола", 20);
+        db.addDefItem("Колбаса", 30);
+        db.addDefItem("Хлеб", 40);
+
+        /*
+
+         */
+
         db.close();
     }
 
