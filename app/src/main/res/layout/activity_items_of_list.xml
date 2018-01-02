@@ -34,7 +34,7 @@
             <LinearLayout
                 android:id="@+id/itemsListLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
             </LinearLayout>
@@ -51,7 +51,7 @@
 
         android:layout_marginRight="8dp"
         android:clickable="true"
-        android:onClick="addList"
+        android:onClick="addItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />

@@ -44,7 +44,7 @@ public class ItemsOfList extends AppCompatActivity {
         LayoutInflater ltInflater = getLayoutInflater();
         LayoutInflater ltInflater2 = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        SQLite1 db = new SQLite1(this);
         Items it = new Items(this);
         Categories cats = new Categories(this);
 
@@ -125,7 +125,7 @@ public class ItemsOfList extends AppCompatActivity {
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.itemsListLayout);
         LayoutInflater ltInflater = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        SQLite1 db = new SQLite1(this);
         Items it = new Items(this);
 
         ArrayList<Items> lists = it.getItems(listid);
@@ -163,4 +163,6 @@ public class ItemsOfList extends AppCompatActivity {
 
     }
 
+    public void addItem(View view) {
+    }
 }

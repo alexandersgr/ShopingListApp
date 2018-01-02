@@ -8,14 +8,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 
@@ -73,10 +74,10 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         LayoutInflater ltInflater = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        Lists li = new Lists(this);
         Items it = new Items(this);
 
-        ArrayList<Lists> lists = db.getAllLists();
+        ArrayList<Lists> lists = li.getAllLists();
 
         for (int i = 0; i < lists.size(); i++) {
             //Log.d("myLogs", "i = " + i);
@@ -104,7 +105,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             linLayout.addView(item);
         }
 
-        db.close();
+        li.close();
+        it.close();
     }
 
     public void listOnClick(View view) {
@@ -170,11 +172,11 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
     public void createAndShowNewList(String name) {
-        SQLite db = new SQLite(this);
+        Lists li = new Lists(this);
 
-        long res = db.addList(name, (int) (long) (System.currentTimeMillis() / 1000));
+        long res = li.addList(name, (int) (long) (System.currentTimeMillis() / 1000));
 
-        db.close();
+        li.close();
 
         TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(String.valueOf(res));
@@ -184,20 +186,17 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
     public void fillDb(View v) {
-        SQLite db = new SQLite(this);
+        Lists li = new Lists(this);
         Items it = new Items(this);
         Categories cat = new Categories(this);
-
-        //SQLiteDatabase sqLiteDatabase = null;
-        //db.onUpgrade(sqLiteDatabase,1,1);
+        DefItems di = new DefItems(this);
 
         long x = System.currentTimeMillis() - 60000000;
         for (int i = 1; i <= 21; i++) {
-            db.addList("List " + i, (int) (long) (
+            li.addList("List " + i, (int) (long) (
                     (x / 1000) + i * 10000)
             );
         }
-
 
 
         for (int n = 0; n <= 5; n++) {
@@ -227,16 +226,19 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         cat.addCategory("Другое", 9000);
 
 
-        db.addDefItem("Батон", 10);
-        db.addDefItem("Кола", 20);
-        db.addDefItem("Колбаса", 30);
-        db.addDefItem("Хлеб", 40);
+        di.addDefItem("Батон", 10);
+        di.addDefItem("Кола", 20);
+        di.addDefItem("Колбаса", 30);
+        di.addDefItem("Хлеб", 40);
 
         /*
 
          */
 
-        db.close();
+        li.close();
+        it.close();
+        di.close();
+        cat.close();
     }
 
     @Override
