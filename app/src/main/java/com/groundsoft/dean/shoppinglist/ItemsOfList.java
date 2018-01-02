@@ -7,17 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.Items;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 public class ItemsOfList extends AppCompatActivity {
 
@@ -47,9 +44,11 @@ public class ItemsOfList extends AppCompatActivity {
         LayoutInflater ltInflater = getLayoutInflater();
         LayoutInflater ltInflater2 = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        SQLite1 db = new SQLite1(this);
+        Items it = new Items(this);
+        Categories cats = new Categories(this);
 
-        ArrayList<Items> lists = db.getItems(listid);
+        ArrayList<Items> lists = it.getItems(listid);
 
         Integer currentItemCatId = -1;
         View category = null;
@@ -62,7 +61,7 @@ public class ItemsOfList extends AppCompatActivity {
 
                 TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
                 Integer cid = lists.get(i).categoryid;
-                Categories cat = db.getCategory(cid);
+                Categories cat = cats.getCategory(cid);
                 String s = cat.categoryName;
                 textCategory.setText(s);
 
@@ -126,9 +125,10 @@ public class ItemsOfList extends AppCompatActivity {
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.itemsListLayout);
         LayoutInflater ltInflater = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        SQLite1 db = new SQLite1(this);
+        Items it = new Items(this);
 
-        ArrayList<Items> lists = db.getItems(listid);
+        ArrayList<Items> lists = it.getItems(listid);
 
         for (int i = 0; i < lists.size(); i++) {
 
@@ -157,13 +157,12 @@ public class ItemsOfList extends AppCompatActivity {
     }
 
     public void checkedClick(View v) {
-        SQLite db = new SQLite(this);
 
-        //TODO: update checked state
         Integer itemId = (Integer) ((CheckBox) v).getTag();
-        db.updateItemCheckedStatus(itemId, ((CheckBox) v).isChecked() ? 1 : 0);
+        new Items(this).updateItemCheckedStatus(itemId, ((CheckBox) v).isChecked() ? 1 : 0);
 
-        db.close();
     }
 
+    public void addItem(View view) {
+    }
 }

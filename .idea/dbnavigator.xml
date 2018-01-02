@@ -26,21 +26,12 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="9f97d30e-f4d8-4034-8561-0282f1854259">
-      <console name="ShopList.db" type="STANDARD"><![CDATA[select * from "Items" where listid=18 order by categoryid desc,date desc]]></console>
+    <connection id="f34a19a4-83e4-4486-9736-c094674bc2ac">
+      <console name="Connection" type="STANDARD" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.ListItems" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.categories" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.android_metadata" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.defaultitems" active-filter-id="EMPTY_FILTER" />
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.Items" active-filter-id="ed6340f5-0fea-480b-bcd5-bb90faca6bf3">
-      <filter id="ed6340f5-0fea-480b-bcd5-bb90faca6bf3" name="18" temporary="false" custom-name="false" type="basic" join-type="AND">
-        <condition column="listid" operator="=" value="18" active="true" />
-      </filter>
-    </filter-list>
-    <filter-list connection-id="9f97d30e-f4d8-4034-8561-0282f1854259" dataset="main.lists" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.Items" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -67,9 +58,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="9f97d30e-f4d8-4034-8561-0282f1854259" active="true">
+      <connection id="f34a19a4-83e4-4486-9736-c094674bc2ac" active="true">
         <database>
-          <name value="ShopList.db" />
+          <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
@@ -90,7 +81,7 @@
           <password value="" />
         </database>
         <properties>
-          <auto-commit value="true" />
+          <auto-commit value="false" />
         </properties>
         <ssh-settings>
           <active value="false" />

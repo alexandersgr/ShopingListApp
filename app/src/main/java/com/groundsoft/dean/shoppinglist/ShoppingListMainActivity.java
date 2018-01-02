@@ -1,22 +1,24 @@
 package com.groundsoft.dean.shoppinglist;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.DefItems;
+import com.groundsoft.dean.shoppinglist.Models.Items;
+import com.groundsoft.dean.shoppinglist.Models.Lists;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             }
         });
 */
-        fillMainList();
+        //fillMainList();
 
     }
 
@@ -60,20 +62,22 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         fillMainList();
     }
 
-    public void fillMainList(){
+    public void fillMainList() {
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
+        linLayout.removeAllViews();
 
         //ListView lv = (ListView) findViewById(R.id.mainlist);
 
         LayoutInflater ltInflater = getLayoutInflater();
 
-        SQLite db = new SQLite(this);
+        Lists li = new Lists(this);
+        Items it = new Items(this);
 
-        ArrayList<Lists> lists = db.getAllLists();
+        ArrayList<Lists> lists = li.getAllLists();
 
         for (int i = 0; i < lists.size(); i++) {
             //Log.d("myLogs", "i = " + i);
@@ -87,11 +91,11 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             TextView listDate = (TextView) item.findViewById(R.id.listDate);
             long dv = Long.valueOf(lists.get(i).date) * 1000;// its need to be in milisecond
             Date df = new java.util.Date(dv);
-            String vv = new SimpleDateFormat("H:m dd MMM yy").format(df);
+            String vv = new SimpleDateFormat("H:mm d MMM yy").format(df);
             listDate.setText(vv);
 
             TextView listItems = (TextView) item.findViewById(R.id.listItems);
-            listItems.setText(db.getFirstItems(lists.get(i).id, 3));
+            listItems.setText(it.getFirstItems(lists.get(i).id, 3));
 
             //item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             item.setBackgroundColor(colors[i % 2]);
@@ -101,7 +105,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             linLayout.addView(item);
         }
 
-        db.close();
+        li.close();
+        it.close();
     }
 
     public void listOnClick(View view) {
@@ -113,7 +118,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         openListActivity((Integer) listName.getTag());
     }
 
-    public void openListActivity(Integer listId){
+    public void openListActivity(Integer listId) {
         Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
         myIntent.putExtra("listid", listId); //Optional parameters
         ShoppingListMainActivity.this.startActivity(myIntent);
@@ -148,7 +153,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 String name = String.valueOf(userInput.getText());
-                                if(!name.equals("")){
+                                if (!name.equals("")) {
                                     createAndShowNewList(name);
                                 }
                             }
@@ -166,28 +171,74 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     }
 
-    public void createAndShowNewList(String name){
-        SQLite db = new SQLite(this);
+    public void createAndShowNewList(String name) {
+        Lists li = new Lists(this);
 
-        long res = db.addList(name,(int) (long) (System.currentTimeMillis()/ 1000));
+        long res = li.addList(name, (int) (long) (System.currentTimeMillis() / 1000));
 
-        db.close();
+        li.close();
 
         TextView tv = (TextView) findViewById(R.id.textView4);
         tv.setText(String.valueOf(res));
 
-        openListActivity((int)res);
+        openListActivity((int) res);
 
     }
 
     public void fillDb(View v) {
-        SQLite db = new SQLite(this);
+        Lists li = new Lists(this);
+        Items it = new Items(this);
+        Categories cat = new Categories(this);
+        DefItems di = new DefItems(this);
 
-        //SQLiteDatabase sqLiteDatabase = null;
-        //db.onUpgrade(sqLiteDatabase,1,1);
+        long x = System.currentTimeMillis() - 60000000;
+        for (int i = 1; i <= 21; i++) {
+            li.addList("List " + i, (int) (long) (
+                    (x / 1000) + i * 10000)
+            );
+        }
 
-        db.fill();
-        db.close();
+
+        for (int n = 0; n <= 5; n++) {
+            int b = n + 14;
+            for (int i = 0; i <= 10; i++) {
+                it.addItemTest(b, (i % 4) * 10 + 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                        (int) (long) ((x / 1000) + i * 10000));
+            }
+        }
+
+
+        cat.addCategory("Аксессуары", 10);
+        cat.addCategory("Алкоголь, табак", 20);
+        cat.addCategory("Бакалея", 30);
+        cat.addCategory("Замороженные продукты", 40);
+        cat.addCategory("Косметика, гигиена", 50);
+        cat.addCategory("Лекарства", 60);
+        cat.addCategory("Молочные продукты", 70);
+        cat.addCategory("Мясо, рыба, яйца", 80);
+        cat.addCategory("Напитки, соки", 90);
+        cat.addCategory("Обувь", 100);
+        cat.addCategory("Одежда", 110);
+        cat.addCategory("Товары для дома", 120);
+        cat.addCategory("Фрукты, овощи, соленья", 130);
+        cat.addCategory("Хлеб, выпечка, сладости", 140);
+        cat.addCategory("Электроника, бытовая техника", 150);
+        cat.addCategory("Другое", 9000);
+
+
+        di.addDefItem("Батон", 10);
+        di.addDefItem("Кола", 20);
+        di.addDefItem("Колбаса", 30);
+        di.addDefItem("Хлеб", 40);
+
+        /*
+
+         */
+
+        li.close();
+        it.close();
+        di.close();
+        cat.close();
     }
 
     @Override

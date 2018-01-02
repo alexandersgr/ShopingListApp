@@ -8,7 +8,7 @@
         android:id="@+id/textCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="" />
 
 
     <android.support.constraint.ConstraintLayout
@@ -27,12 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ttt" />
 
             </LinearLayout>
         </ScrollView>
