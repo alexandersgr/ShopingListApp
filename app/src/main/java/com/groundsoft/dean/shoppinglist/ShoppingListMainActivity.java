@@ -3,6 +3,8 @@ package com.groundsoft.dean.shoppinglist;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +27,13 @@ import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 
 public class ShoppingListMainActivity extends AppCompatActivity {
@@ -209,7 +220,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             }
         }
 
-
+/*
         cat.addCategory("Аксессуары", 10);
         cat.addCategory("Алкоголь, табак", 20);
         cat.addCategory("Бакалея", 30);
@@ -226,6 +237,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         cat.addCategory("Хлеб, выпечка, сладости", 140);
         cat.addCategory("Электроника, бытовая техника", 150);
         cat.addCategory("Другое", 9000);
+*/
+
 
 
         di.addDefItem("Батон", 10);
@@ -259,9 +272,71 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            TextView tv = (TextView) findViewById(R.id.textView4);
+            tv.setText("options");
             return true;
         }
 
+        if (id == R.id.action_test1) {
+
+            TextView tv = (TextView) findViewById(R.id.textView4);
+            tv.setText("test1");
+
+            xmltest();
+
+            //R.xml.ctgs
+            return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    void xmltest(){
+        TextView tv = (TextView) findViewById(R.id.textView4);
+
+
+        try {
+            InputStream is = getResources().openRawResource(R.raw.ctgs);
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(is);
+
+            Element element=doc.getDocumentElement();
+            element.normalize();
+
+            NodeList nList = doc.getElementsByTagName("ctgs");
+
+            for (int i=0; i<nList.getLength(); i++) {
+
+                Node node = nList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element2 = (Element) node;
+
+                    String name = element2.getAttribute("name");
+                    Integer cid = Integer.valueOf(element2.getAttribute("cid"));
+
+                    Resources res = this.getResources();
+                    String n =  res.getString(res.getIdentifier(name, "string", this.getPackageName()));
+
+                    tv.setText(n + " " + cid);
+                    //tv1.setText(tv1.getText()+"Surname : " + getValue("surname", element2)+"\n");
+                    //tv1.setText(tv1.getText()+"-----------------------");
+                }
+            }
+
+        } catch (Exception e) {e.printStackTrace();}
+
+    }
+
+    private static String getValue(String tag, Element element) {
+        NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
+        Node node = nodeList.item(0);
+        return node.getNodeValue();
+    }
+
 }

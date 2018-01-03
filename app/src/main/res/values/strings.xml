@@ -8,4 +8,7 @@
     <string name="new_item_name_placeholder">Name</string>
     <string name="new_item_quantity_placeholder">Quantity</string>
     <string name="new_item_price_placeholder">Price</string>
+    <string name="action_test1">xml test</string>
+
+
 </resources>

@@ -23,14 +23,20 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="false" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac">
+        <schema name="main" object-types="column, constraint, index, table, dataset trigger, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="f34a19a4-83e4-4486-9736-c094674bc2ac">
-      <console name="Connection" type="STANDARD" />
+      <console name="Connection" type="STANDARD"><![CDATA[select catorder,name from categories]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.categories" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.defaultitems" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.Items" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">

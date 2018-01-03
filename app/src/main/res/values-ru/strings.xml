@@ -9,5 +9,7 @@
     <string name="new_item_name_placeholder">Название</string>
     <string name="new_item_quantity_placeholder">Количество</string>
     <string name="new_item_price_placeholder">Цена</string>
+    <string name="action_test1">тест xml</string>
+
 
 </resources>

@@ -26,7 +26,7 @@ public class ItemsOfList extends AppCompatActivity {
 
     private Integer currentList;
     public Spinner categorySpinner;
-    private static final String[]paths = {"item 1", "item 2", "item 3"};
+    private static final String[] paths = {"item 1", "item 2", "item 3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +99,13 @@ public class ItemsOfList extends AppCompatActivity {
 
                     catlin.addView(item);
 
-                    if (i<lists.size()-1){
-                        if(lists.get(i).categoryid!=lists.get(i+1).categoryid){
+                    if (i < lists.size() - 1) {
+                        if (lists.get(i).categoryid != lists.get(i + 1).categoryid) {
                             break;
+                        } else {
+                            i += 1;
                         }
-                        else{
-                            i+=1;
-                        }
-                    }else{
+                    } else {
                         break;
                     }
                 }
@@ -114,7 +113,6 @@ public class ItemsOfList extends AppCompatActivity {
 
                 linLayout.addView(category);
             }
-
 
 
             currentItemCatId = lists.get(i).categoryid;
@@ -182,9 +180,9 @@ public class ItemsOfList extends AppCompatActivity {
         categorySpinner = promptsView.findViewById(R.id.categorySpinner);
 
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, paths);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
 
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -218,7 +216,7 @@ public class ItemsOfList extends AppCompatActivity {
 
 
     private void createNewItem(String name, Integer pos) {
-        Toast.makeText(this,name + " " + String.valueOf(pos), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, name + " " + String.valueOf(pos), Toast.LENGTH_LONG).show();
     }
 
 

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 public class DefItems extends SQLiteOpenHelper {
+
     public Integer defItemId;
     public String defItemName;
     public Integer defItemOrder;
@@ -17,6 +18,7 @@ public class DefItems extends SQLiteOpenHelper {
     static final String TABLE_DEFITEMS_KEY_ID = "id";
     static final String TABLE_DEFITEMS_KEY_NAME = "name";
     static final String TABLE_DEFITEMS_KEY_ORDER = "defitorder";
+    static final String TABLE_DEFITEMS_KEY_DEFCATEGORY = "defcategory";
 
     public DefItems(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);

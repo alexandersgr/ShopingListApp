@@ -36,7 +36,8 @@ class DbConsts {
         String query4 = "Create table " + DefItems.TABLE_DEFITEMS + " (" +
                 DefItems.TABLE_DEFITEMS_KEY_ID + " integer primary key, " +
                 DefItems.TABLE_DEFITEMS_KEY_NAME + " text, " +
-                DefItems.TABLE_DEFITEMS_KEY_ORDER + " integer)";
+                DefItems.TABLE_DEFITEMS_KEY_ORDER + " integer, " +
+                DefItems.TABLE_DEFITEMS_KEY_DEFCATEGORY + " integer)";
         db.execSQL(query4);
 
     }
