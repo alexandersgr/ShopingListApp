@@ -4,4 +4,8 @@
     <string name="title_activity_items_of_list">List</string>
     <string name="dialog_OK_btn">OK</string>
     <string name="dialog_Cancel_btn">Cancel</string>
+    <string name="new_list_prompt">New list name :</string>
+    <string name="new_item_name_placeholder">Name</string>
+    <string name="new_item_quantity_placeholder">Quantity</string>
+    <string name="new_item_price_placeholder">Price</string>
 </resources>

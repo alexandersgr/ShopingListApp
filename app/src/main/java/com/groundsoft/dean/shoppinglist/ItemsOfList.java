@@ -1,5 +1,7 @@
 package com.groundsoft.dean.shoppinglist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,9 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Models.Categories;
 import com.groundsoft.dean.shoppinglist.Models.Items;
@@ -17,6 +23,10 @@ import com.groundsoft.dean.shoppinglist.Models.Items;
 import java.util.ArrayList;
 
 public class ItemsOfList extends AppCompatActivity {
+
+    private Integer currentList;
+    public Spinner categorySpinner;
+    private static final String[]paths = {"item 1", "item 2", "item 3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +38,11 @@ public class ItemsOfList extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        int listid = intent.getIntExtra("listid", 0);
+        currentList = intent.getIntExtra("listid", 0);
 
-        //fillList(listid);
-        categorizedList(listid);
+        //fillList(currentList);
+        categorizedList(currentList);
     }
-
 
     private void categorizedList(Integer listid) {
         int[] colors = new int[2];
@@ -44,7 +53,6 @@ public class ItemsOfList extends AppCompatActivity {
         LayoutInflater ltInflater = getLayoutInflater();
         LayoutInflater ltInflater2 = getLayoutInflater();
 
-        SQLite1 db = new SQLite1(this);
         Items it = new Items(this);
         Categories cats = new Categories(this);
 
@@ -57,7 +65,7 @@ public class ItemsOfList extends AppCompatActivity {
 
 
             if (currentItemCatId != lists.get(i).categoryid) {
-                category = ltInflater.inflate(R.layout.categories, linLayout, false);
+                category = ltInflater.inflate(R.layout.inflable_categories, linLayout, false);
 
                 TextView textCategory = (TextView) category.findViewById(R.id.textCategory);
                 Integer cid = lists.get(i).categoryid;
@@ -71,7 +79,7 @@ public class ItemsOfList extends AppCompatActivity {
 
                 while (true) {
 
-                    View item = ltInflater2.inflate(R.layout.items, catlin, false);
+                    View item = ltInflater2.inflate(R.layout.inflable_items, catlin, false);
 
                     TextView itemName = (TextView) item.findViewById(R.id.itemName);
                     itemName.setText(lists.get(i).name);
@@ -113,7 +121,6 @@ public class ItemsOfList extends AppCompatActivity {
         }
 
 
-        db.close();
     }
 
     private void fillList(Integer listid) {
@@ -125,14 +132,13 @@ public class ItemsOfList extends AppCompatActivity {
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.itemsListLayout);
         LayoutInflater ltInflater = getLayoutInflater();
 
-        SQLite1 db = new SQLite1(this);
         Items it = new Items(this);
 
         ArrayList<Items> lists = it.getItems(listid);
 
         for (int i = 0; i < lists.size(); i++) {
 
-            View item = ltInflater.inflate(R.layout.items, linLayout, false);
+            View item = ltInflater.inflate(R.layout.inflable_items, linLayout, false);
 
             TextView itemName = (TextView) item.findViewById(R.id.itemName);
             itemName.setText(lists.get(i).name);
@@ -153,7 +159,6 @@ public class ItemsOfList extends AppCompatActivity {
             linLayout.addView(item);
         }
 
-        db.close();
     }
 
     public void checkedClick(View v) {
@@ -164,5 +169,57 @@ public class ItemsOfList extends AppCompatActivity {
     }
 
     public void addItem(View view) {
+
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.dialog_add_item, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView.findViewById(R.id.newItemName);
+
+        categorySpinner = promptsView.findViewById(R.id.categorySpinner);
+
+
+
+        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item,paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        categorySpinner.setAdapter(adapter);
+        //categorySpinner.setOnItemSelectedListener(this);
+
+        //
+
+
+        alertDialogBuilder
+                .setPositiveButton(R.string.dialog_OK_btn,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String name = String.valueOf(userInput.getText());
+                                if (!name.equals("")) {
+                                    createNewItem(name, categorySpinner.getSelectedItemPosition());
+                                }
+                            }
+                        })
+                .setNegativeButton(R.string.dialog_Cancel_btn,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
     }
+
+
+    private void createNewItem(String name, Integer pos) {
+        Toast.makeText(this,name + " " + String.valueOf(pos), Toast.LENGTH_LONG).show();
+    }
+
+
 }

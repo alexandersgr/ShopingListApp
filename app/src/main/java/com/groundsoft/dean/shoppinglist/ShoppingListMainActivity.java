@@ -14,15 +14,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import com.groundsoft.dean.shoppinglist.Models.Categories;
 import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
@@ -33,7 +34,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             listOnClick(v);
         }
     };
-    ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         for (int i = 0; i < lists.size(); i++) {
             //Log.d("myLogs", "i = " + i);
 
-            View item = ltInflater.inflate(R.layout.lists, linLayout, false);
+            View item = ltInflater.inflate(R.layout.inflable_lists, linLayout, false);
 
             TextView listName = (TextView) item.findViewById(R.id.listName);
             listName.setText(lists.get(i).listname);
@@ -171,6 +172,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     }
 
+
     public void createAndShowNewList(String name) {
         Lists li = new Lists(this);
 
@@ -178,8 +180,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         li.close();
 
-        TextView tv = (TextView) findViewById(R.id.textView4);
-        tv.setText(String.valueOf(res));
+        //TextView tv = (TextView) findViewById(R.id.textView4);
+        //tv.setText(String.valueOf(res));
 
         openListActivity((int) res);
 
@@ -243,7 +245,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds inflable_items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_shopping_list_main, menu);
         return true;
     }

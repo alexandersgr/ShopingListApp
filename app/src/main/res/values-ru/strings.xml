@@ -5,5 +5,9 @@
     <string name="dialog_OK_btn">OK</string>
     <string name="title_activity_items_of_list">Список</string>
     <string name="dialog_Cancel_btn">Отмена</string>
+    <string name="new_list_prompt">Название нового списка :</string>
+    <string name="new_item_name_placeholder">Название</string>
+    <string name="new_item_quantity_placeholder">Количество</string>
+    <string name="new_item_price_placeholder">Цена</string>
 
 </resources>
