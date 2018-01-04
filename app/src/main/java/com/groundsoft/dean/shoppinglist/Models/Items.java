@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.Html;
+import android.text.Spanned;
 
 import java.util.ArrayList;
 
-public class Items  extends SQLiteOpenHelper {
+public class Items extends SQLiteOpenHelper {
     public Integer id;
     public Integer listid;
     public Integer categoryid;
@@ -68,7 +70,7 @@ public class Items  extends SQLiteOpenHelper {
         vals.put(TABLE_ITEMS_KEY_QUANTITY, quantity);
         vals.put(TABLE_ITEMS_KEY_CHECKED, 0);
 
-        Integer result = (int)db.insert(TABLE_ITEMS, null, vals);
+        Integer result = (int) db.insert(TABLE_ITEMS, null, vals);
         db.close();
 
         return result;
@@ -87,32 +89,40 @@ public class Items  extends SQLiteOpenHelper {
         vals.put(TABLE_ITEMS_KEY_CHECKED, checked);
         vals.put(TABLE_ITEMS_KEY_DATE, date);
 
-        Integer result = (int)db.insert(TABLE_ITEMS, null, vals);
+        Integer result = (int) db.insert(TABLE_ITEMS, null, vals);
         db.close();
 
         return result;
     }
 
-    public String getFirstItems(Integer listid, Integer limit) {
+    public Spanned getFirstItems(Integer listid, Integer limit) {
         String result = "";
-        ArrayList items = new ArrayList<Items>();
+
+        //ArrayList items = new ArrayList<Items>();
         String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " limit " + limit;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
+            /*
             Items item = new Items(null);
             item.name = cursor.getString(3);
             item.quantity = cursor.getInt(5);
             item.checked = cursor.getInt(6);
             items.add(item);
-            result += cursor.getString(3) + " ";
+            */
+            if (cursor.getInt(6) == 1) {
+                result += "<s>" + cursor.getString(3) + "</s> ";
+            } else {
+                result += cursor.getString(3) + " ";
+            }
+
         }
 
-
         cursor.close();
-        return result;
+
+        return Html.fromHtml(result);
     }
 
     public ArrayList<Items> getItems(Integer listid) {

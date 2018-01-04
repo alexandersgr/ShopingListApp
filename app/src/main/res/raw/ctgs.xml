@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <categories>
-    <ctgs name="cg10" cid="10" image="">test1 <strike>sss</strike> test2</ctgs>
+    <ctgs name="cg10" cid="10" image=""/>
     <ctgs name="cg20" cid="20" image=""/>
     <ctgs name="cg30" cid="30" image=""/>
     <ctgs name="cg40" cid="40" image=""/>

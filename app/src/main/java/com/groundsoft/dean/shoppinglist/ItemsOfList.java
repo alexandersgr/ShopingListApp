@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -201,6 +203,11 @@ public class ItemsOfList extends AppCompatActivity {
         AutoCompleteTextView actv = (AutoCompleteTextView) promptsView.findViewById(R.id.autoCompleteItemName);
         actv.setThreshold(1);
         actv.setAdapter(adapter2);
+
+
+        //Spanned sp = Html.fromHtml("ccc <b>ddd</b> ddd <i>iii</i> sss");
+
+        //userInput.setText(sp);
 
 
         alertDialogBuilder

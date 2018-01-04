@@ -56,7 +56,7 @@ public class Ctgrs {
 
                     Ctgrs c = new Ctgrs();
 
-                    c.categoryName = n + element2.getTextContent();
+                    c.categoryName = n;
                     c.categoryImage = image;
                     c.categoryOrder = cid;
 
