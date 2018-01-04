@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,7 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.groundsoft.dean.shoppinglist.Adapters.CategoriesSpinnerAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 
 import java.util.ArrayList;
@@ -180,16 +183,24 @@ public class ItemsOfList extends AppCompatActivity {
         categorySpinner = promptsView.findViewById(R.id.categorySpinner);
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, paths);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, paths);
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        Ctgrs ct = new Ctgrs();
+        ArrayList<Ctgrs> categories = ct.getAllCategories(this);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        CategoriesSpinnerAdapter adapter = new CategoriesSpinnerAdapter(this, categories);
 
         categorySpinner.setAdapter(adapter);
         //categorySpinner.setOnItemSelectedListener(this);
 
-        //
+        String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, fruits);
+        AutoCompleteTextView actv = (AutoCompleteTextView) promptsView.findViewById(R.id.autoCompleteItemName);
+        actv.setThreshold(1);
+        actv.setAdapter(adapter2);
 
 
         alertDialogBuilder

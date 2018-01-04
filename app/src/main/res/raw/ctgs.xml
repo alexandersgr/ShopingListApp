@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <categories>
-    <ctgs cid="10" name="cg10"/>
-    <ctgs cid="20" name="cg20"/>
-    <ctgs cid="9000" name="cg9000"/>
-
+    <ctgs name="cg10" cid="10" image="">test1 <strike>sss</strike> test2</ctgs>
+    <ctgs name="cg20" cid="20" image=""/>
+    <ctgs name="cg30" cid="30" image=""/>
+    <ctgs name="cg40" cid="40" image=""/>
+    <ctgs name="cg50" cid="50" image=""/>
+    <ctgs name="cg60" cid="60" image=""/>
+    <ctgs name="cg70" cid="70" image=""/>
+    <ctgs name="cg80" cid="80" image=""/>
+    <ctgs name="cg90" cid="90" image=""/>
+    <ctgs name="cg100" cid="100" image=""/>
+    <ctgs name="cg110" cid="110" image=""/>
+    <ctgs name="cg120" cid="120" image=""/>
+    <ctgs name="cg130" cid="130" image=""/>
+    <ctgs name="cg140" cid="140" image="ic_category_140"/>
+    <ctgs name="cg150" cid="150" image=""/>
+    <ctgs name="cg9000" cid="9000" image=""/>
 </categories>
