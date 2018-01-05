@@ -1,16 +1,16 @@
 package com.groundsoft.dean.shoppinglist;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -26,12 +26,25 @@ import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ItemsOfList extends AppCompatActivity {
 
     private Integer currentList;
     public Spinner categorySpinner;
-    private static final String[] paths = {"item 1", "item 2", "item 3"};
+    private Context context;
+
+    AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Ctgrs s = (Ctgrs) parent.getItemAtPosition(position);
+            categorySpinner.setSelection(s.categoryId);
+
+            //createNewItem("x", s.categoryId);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +60,9 @@ public class ItemsOfList extends AppCompatActivity {
 
         //fillList(currentList);
         categorizedList(currentList);
+
+        context = this;
+
     }
 
     private void categorizedList(Integer listid) {
@@ -199,10 +215,11 @@ public class ItemsOfList extends AppCompatActivity {
 
         String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, fruits);
-        AutoCompleteTextView actv = (AutoCompleteTextView) promptsView.findViewById(R.id.autoCompleteItemName);
+        ArrayAdapter<Ctgrs> adapter2 = new ArrayAdapter<Ctgrs>(this, android.R.layout.select_dialog_item, categories);
+        final AutoCompleteTextView actv = (AutoCompleteTextView) promptsView.findViewById(R.id.autoCompleteItemName);
         actv.setThreshold(1);
         actv.setAdapter(adapter2);
+        actv.setOnItemClickListener(actvOnClick);
 
 
         //Spanned sp = Html.fromHtml("ccc <b>ddd</b> ddd <i>iii</i> sss");
@@ -214,9 +231,11 @@ public class ItemsOfList extends AppCompatActivity {
                 .setPositiveButton(R.string.dialog_OK_btn,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                String name = String.valueOf(userInput.getText());
+                                //String name = String.valueOf(userInput.getText());
+                                String name = String.valueOf(actv.getText());
                                 if (!name.equals("")) {
-                                    createNewItem(name, categorySpinner.getSelectedItemPosition());
+                                    createNewItem(name, 1);
+                                    //categorySpinner.getSelectedItemPosition()
                                 }
                             }
                         })
