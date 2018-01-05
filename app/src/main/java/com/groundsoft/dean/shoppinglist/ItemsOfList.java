@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,25 +18,30 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListPopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Adapters.CategoriesSpinnerAdapter;
+import com.groundsoft.dean.shoppinglist.Adapters.ItemNameAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories;
 import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
+import com.groundsoft.dean.shoppinglist.Models.DfItms;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ItemsOfList extends AppCompatActivity {
 
     private Integer currentList;
-    public Spinner categorySpinner;
+    private Spinner categorySpinner;
     private Context context;
+    ListPopupWindow lpw;
+    ArrayList<Ctgrs> categories;
+    ArrayList<DfItms.DfItmsRaw> defItemsList;
 
-    AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
+    private AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -42,6 +49,54 @@ public class ItemsOfList extends AppCompatActivity {
             categorySpinner.setSelection(s.categoryId);
 
             //createNewItem("x", s.categoryId);
+        }
+    };
+
+    private AdapterView.OnItemClickListener lpwOnClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            lpw.dismiss();
+        }
+    };
+    private TextWatcher itemNameOnTextChange = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            //createNewItem(String.valueOf(s), count);
+
+            if (count > 0) {
+                ArrayList<DfItms.DfItmsFiltered> c = new ArrayList<DfItms.DfItmsFiltered>();
+
+                DfItms di = new DfItms();
+
+                c = di.filter(String.valueOf(s), defItemsList);
+
+                //ArrayAdapter<DfItms.DfItmsFiltered> adapter3 = new ArrayAdapter<DfItms.DfItmsFiltered>(context, android.R.layout.select_dialog_item, c);
+
+                ItemNameAdapter adapter3 = new ItemNameAdapter(context, c);
+                lpw.setAdapter(adapter3);
+
+                if (c.size() == 0) {
+                    lpw.dismiss();
+                } else {
+                    lpw.show();
+                }
+
+
+            } else {
+                lpw.dismiss();
+            }
+
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
         }
     };
 
@@ -62,6 +117,9 @@ public class ItemsOfList extends AppCompatActivity {
         categorizedList(currentList);
 
         context = this;
+
+        DfItms di = new DfItms();
+        defItemsList = di.getAllDefItems(this);
 
     }
 
@@ -206,14 +264,14 @@ public class ItemsOfList extends AppCompatActivity {
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         Ctgrs ct = new Ctgrs();
-        ArrayList<Ctgrs> categories = ct.getAllCategories(this);
+
+        categories = ct.getAllCategories(this);
 
         CategoriesSpinnerAdapter adapter = new CategoriesSpinnerAdapter(this, categories);
 
         categorySpinner.setAdapter(adapter);
         //categorySpinner.setOnItemSelectedListener(this);
 
-        String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
 
         ArrayAdapter<Ctgrs> adapter2 = new ArrayAdapter<Ctgrs>(this, android.R.layout.select_dialog_item, categories);
         final AutoCompleteTextView actv = (AutoCompleteTextView) promptsView.findViewById(R.id.autoCompleteItemName);
@@ -223,8 +281,16 @@ public class ItemsOfList extends AppCompatActivity {
 
 
         //Spanned sp = Html.fromHtml("ccc <b>ddd</b> ddd <i>iii</i> sss");
-
         //userInput.setText(sp);
+
+
+        lpw = new ListPopupWindow(this);
+        //lpw.setAdapter(adapter2);
+        lpw.setAnchorView(userInput);
+        //lpw.setModal(true);
+        lpw.setOnItemClickListener(lpwOnClick);
+
+        userInput.addTextChangedListener(itemNameOnTextChange);
 
 
         alertDialogBuilder

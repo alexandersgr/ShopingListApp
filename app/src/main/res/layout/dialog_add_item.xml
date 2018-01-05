@@ -8,7 +8,7 @@
         android:id="@+id/autoCompleteItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="AutoCompleteTextView" />
+        android:hint="@string/new_item_name_placeholder" />
 
     <EditText
         android:id="@+id/newItemName"

@@ -18,22 +18,11 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class Ctgrs {
-    public Integer categoryId;
-    public String categoryName;
-    public Integer categoryOrder;
-    public int categoryImage;
+public class DfItms {
 
-    public Spanned fname;
+    public ArrayList<DfItmsRaw> getAllDefItems(Context context) {
 
-    @Override
-    public String toString() {
-        return categoryName;
-    }
-
-    public ArrayList<Ctgrs> getAllCategories(Context context) {
-
-        ArrayList<Ctgrs> categories = new ArrayList<Ctgrs>();
+        ArrayList<DfItmsRaw> defitems = new ArrayList<DfItmsRaw>();
         Integer id = 0;
 
         try {
@@ -58,27 +47,19 @@ public class Ctgrs {
                     String name = element2.getAttribute("name");
                     //element2.getTextContent();
                     Integer cid = Integer.valueOf(element2.getAttribute("cid"));
-                    String img = element2.getAttribute("image");
 
                     Resources res = context.getResources();
                     String n = res.getString(res.getIdentifier(name, "string", context.getPackageName()));
 
-                    int image = 0;
+                    DfItmsRaw di = new DfItmsRaw();
 
-                    if (!img.equals("")) {
-                        image = res.getIdentifier(img, "mipmap", context.getPackageName());
-                    }
-
-                    Ctgrs c = new Ctgrs();
-
-                    c.categoryId = id;
-                    c.categoryName = n;
-                    c.categoryImage = image;
-                    c.categoryOrder = cid;
+                    di.DIId = id;
+                    di.DIName = n;
+                    di.DICategoryOrder = cid;
 
                     id++;
 
-                    categories.add(c);
+                    defitems.add(di);
                 }
             }
 
@@ -86,22 +67,41 @@ public class Ctgrs {
             e.printStackTrace();
         }
 
-        return categories;
+        return defitems;
     }
 
-    public Integer search(Context context, String s) {
-        Integer pos = -1;
+    public ArrayList<DfItmsFiltered> filter(String s, ArrayList<DfItmsRaw> list) {
 
-        ArrayList<Ctgrs> categories = getAllCategories(context);
+        ArrayList<DfItmsFiltered> filteredList = new ArrayList<DfItmsFiltered>();
 
-        for (int i = 0; i < categories.size(); i++) {
-            if (categories.get(i).categoryName.equals(s)) {
-                pos = i;
-                break;
+        for (int i = 0; i < list.size(); i++) {
+            int start = list.get(i).DIName.toLowerCase().indexOf(s);
+            if (start >= 0) {
+                DfItmsFiltered c = new DfItmsFiltered();
+                c.DINameS = Html.fromHtml(String.valueOf(start) + " <b>d</b> " + list.get(i).DIName);
+                filteredList.add(c);
             }
         }
-        return pos;
+
+        return filteredList;
     }
 
+    public class DfItmsRaw {
+        public Integer DIId;
+        public String DIName;
+        public Integer DICategoryOrder;
+        public Spanned DINameS;
+    }
 
+    public class DfItmsFiltered {
+        public Integer DIId;
+        public String DIName;
+        public Integer DICategoryOrder;
+        public Spanned DINameS;
+
+        @Override
+        public String toString() {
+            return String.valueOf(DINameS);
+        }
+    }
 }
