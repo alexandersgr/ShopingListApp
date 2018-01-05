@@ -70,16 +70,28 @@ public class DfItms {
         return defitems;
     }
 
-    public ArrayList<DfItmsFiltered> filter(String s, ArrayList<DfItmsRaw> list) {
+    public ArrayList<DfItmsFiltered> filter(String query, ArrayList<DfItmsRaw> list) {
 
         ArrayList<DfItmsFiltered> filteredList = new ArrayList<DfItmsFiltered>();
+        DfItmsRaw currentItem;
 
         for (int i = 0; i < list.size(); i++) {
-            int start = list.get(i).DIName.toLowerCase().indexOf(s);
+            currentItem = list.get(i);
+            int start = currentItem.DIName.toLowerCase().indexOf(query.toLowerCase());
             if (start >= 0) {
-                DfItmsFiltered c = new DfItmsFiltered();
-                c.DINameS = Html.fromHtml(String.valueOf(start) + " <b>d</b> " + list.get(i).DIName);
-                filteredList.add(c);
+                int length = query.length();
+                String currentName = currentItem.DIName;
+                DfItmsFiltered filteredItem = new DfItmsFiltered();
+
+                String s = currentName.substring(0, start) +
+                        "<span style=\"color: #1d59ba\"><b>" + currentName.substring(start, start + length) + "</b></span>" +
+                        currentName.substring(start + length, currentName.length());
+
+                filteredItem.DINameS = Html.fromHtml(s);
+                filteredItem.DIId = currentItem.DIId;
+                filteredItem.DICategoryOrder = currentItem.DICategoryOrder;
+
+                filteredList.add(filteredItem);
             }
         }
 
@@ -90,18 +102,11 @@ public class DfItms {
         public Integer DIId;
         public String DIName;
         public Integer DICategoryOrder;
-        public Spanned DINameS;
     }
 
     public class DfItmsFiltered {
         public Integer DIId;
-        public String DIName;
         public Integer DICategoryOrder;
         public Spanned DINameS;
-
-        @Override
-        public String toString() {
-            return String.valueOf(DINameS);
-        }
     }
 }
