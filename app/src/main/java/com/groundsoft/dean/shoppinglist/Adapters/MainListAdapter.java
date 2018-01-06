@@ -84,10 +84,10 @@ public class MainListAdapter extends BaseAdapter {
         TextView listItems = (TextView) item.findViewById(R.id.listItems);
         listItems.setText(it.getFirstItems(lists.get(position).id, 3));
 
-        item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
+        //item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
         item.setBackgroundColor(colors[position % 2]);
 
-        item.setOnClickListener(listOnClick);
+        //item.setOnClickListener(listOnClick);
 
 
         it.close();
