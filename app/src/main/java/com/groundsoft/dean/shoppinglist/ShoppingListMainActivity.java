@@ -344,6 +344,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.textView4);
         Snackbar.make(tv, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+        //test
     }
 
 
