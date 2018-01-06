@@ -188,7 +188,7 @@ public class ItemsOfList extends AppCompatActivity {
                     catlin.addView(item);
 
                     if (i < lists.size() - 1) {
-                        if (lists.get(i).categoryid.equals(lists.get(i + 1).categoryid) ) {
+                        if (!lists.get(i).categoryid.equals(lists.get(i + 1).categoryid) ) {
                             break;
                         } else {
                             i += 1;
