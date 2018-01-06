@@ -9,16 +9,9 @@
     tools:context="com.groundsoft.dean.shoppinglist.ShoppingListMainActivity"
     tools:showIn="@layout/activity_shopping_list_main">
 
-    <ScrollView
-        android:id="@+id/scroll"
+
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/mainlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"/>
-    </ScrollView>
-
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

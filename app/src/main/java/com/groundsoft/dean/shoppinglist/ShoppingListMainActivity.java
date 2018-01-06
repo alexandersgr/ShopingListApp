@@ -3,7 +3,6 @@ package com.groundsoft.dean.shoppinglist;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,36 +13,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
+import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories;
 import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
     int[] colors = new int[2];
-    private View.OnClickListener listOnClick = new View.OnClickListener() {
+    ListView mlist;
+    MainListAdapter mla;
+
+    public View.OnClickListener listOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             listOnClick(v);
         }
     };
+    private boolean needRefresh = false;
 
 
     @Override
@@ -65,12 +61,26 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 */
         //fillMainList();
 
+        Lists li = new Lists(this);
+        ArrayList<Lists> lists = li.getAllLists();
+
+
+        mla = new MainListAdapter(this, lists, listOnClick);
+
+        mlist = (ListView) findViewById(R.id.list);
+        mlist.setAdapter(mla);
+
+
     }
 
     protected void onResume() {
         super.onResume();
 
-        fillMainList();
+        if (needRefresh){
+            mla.notifyDataSetChanged();
+            needRefresh=false;
+        }
+        //fillMainList();
     }
 
     public void fillMainList() {
@@ -78,7 +88,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
-        LinearLayout linLayout = (LinearLayout) findViewById(R.id.mainlist);
+        LinearLayout linLayout = null; // (LinearLayout) findViewById(R.id.mainlist);
         linLayout.removeAllViews();
 
         //ListView lv = (ListView) findViewById(R.id.mainlist);
@@ -190,8 +200,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         li.close();
 
-        //TextView tv = (TextView) findViewById(R.id.textView4);
-        //tv.setText(String.valueOf(res));
+        needRefresh = true;
 
         openListActivity((int) res);
 
@@ -237,7 +246,6 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         cat.addCategory("Электроника, бытовая техника", 150);
         cat.addCategory("Другое", 9000);
 */
-
 
 
         di.addDefItem("Батон", 10);
@@ -293,49 +301,9 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
 
-
-    void xmltest(){
-        TextView tv = (TextView) findViewById(R.id.textView4);
-
-
-        try {
-            InputStream is = getResources().openRawResource(R.raw.ctgs);
-
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(is);
-
-            Element element=doc.getDocumentElement();
-            element.normalize();
-
-            NodeList nList = doc.getElementsByTagName("ctgs");
-
-            for (int i=0; i<nList.getLength(); i++) {
-
-                Node node = nList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element2 = (Element) node;
-
-                    String name = element2.getAttribute("name");
-                    Integer cid = Integer.valueOf(element2.getAttribute("cid"));
-
-                    Resources res = this.getResources();
-                    String n =  res.getString(res.getIdentifier(name, "string", this.getPackageName()));
-
-                    tv.setText(n + " " + cid);
-                    //tv1.setText(tv1.getText()+"Surname : " + getValue("surname", element2)+"\n");
-                    //tv1.setText(tv1.getText()+"-----------------------");
-                }
-            }
-
-        } catch (Exception e) {e.printStackTrace();}
+    void xmltest() {
 
     }
 
-    private static String getValue(String tag, Element element) {
-        NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = nodeList.item(0);
-        return node.getNodeValue();
-    }
 
 }
