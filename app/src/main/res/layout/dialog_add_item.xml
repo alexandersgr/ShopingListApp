@@ -7,13 +7,15 @@
     <AutoCompleteTextView
         android:id="@+id/autoCompleteItemName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/new_item_name_placeholder" />
+        android:layout_height="0dp"
+        android:hint="@string/new_item_name_placeholder"
+        android:visibility="invisible" />
 
     <EditText
         android:id="@+id/newItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:hint="@string/new_item_name_placeholder"
         android:inputType="">
 
@@ -31,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/new_item_quantity_placeholder" />
+            android:hint="@string/new_item_quantity_placeholder"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/editPrice"
@@ -40,8 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/new_item_price_placeholder" />
+            android:hint="@string/new_item_price_placeholder"
+            android:inputType="textPersonName" />
     </LinearLayout>
 
     <Spinner

@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Adapters.CategoriesSpinnerAdapter;
 import com.groundsoft.dean.shoppinglist.Adapters.ItemNameAdapter;
@@ -40,6 +39,9 @@ public class ItemsOfList extends AppCompatActivity {
     ListPopupWindow lpw;
     ArrayList<Ctgrs> categories;
     ArrayList<DfItms.DfItmsRaw> defItemsList;
+    EditText userInput = null;
+    EditText price = null;
+    EditText quantity = null;
 
     private AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -55,9 +57,14 @@ public class ItemsOfList extends AppCompatActivity {
     private AdapterView.OnItemClickListener lpwOnClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            DfItms.DfItmsFiltered itmFiltered = (DfItms.DfItmsFiltered) parent.getItemAtPosition(position);
+            userInput.setText(String.valueOf(itmFiltered.DINameS));
+            Integer did = DfItms.getitemIdbyCid(itmFiltered.DICategoryOrder, categories);
+            categorySpinner.setSelection(did);
             lpw.dismiss();
         }
     };
+
     private TextWatcher itemNameOnTextChange = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -129,6 +136,8 @@ public class ItemsOfList extends AppCompatActivity {
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
         LinearLayout linLayout = (LinearLayout) findViewById(R.id.itemsListLayout);
+        linLayout.removeAllViews();
+
         LayoutInflater ltInflater = getLayoutInflater();
         LayoutInflater ltInflater2 = getLayoutInflater();
 
@@ -179,7 +188,7 @@ public class ItemsOfList extends AppCompatActivity {
                     catlin.addView(item);
 
                     if (i < lists.size() - 1) {
-                        if (lists.get(i).categoryid != lists.get(i + 1).categoryid) {
+                        if (lists.get(i).categoryid.equals(lists.get(i + 1).categoryid) ) {
                             break;
                         } else {
                             i += 1;
@@ -254,7 +263,11 @@ public class ItemsOfList extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptsView);
 
-        final EditText userInput = (EditText) promptsView.findViewById(R.id.newItemName);
+
+        userInput = (EditText) promptsView.findViewById(R.id.newItemName);
+        price = (EditText) promptsView.findViewById(R.id.editPrice);
+        quantity = (EditText) promptsView.findViewById(R.id.editQuantity);
+
 
         categorySpinner = promptsView.findViewById(R.id.categorySpinner);
 
@@ -270,6 +283,7 @@ public class ItemsOfList extends AppCompatActivity {
         CategoriesSpinnerAdapter adapter = new CategoriesSpinnerAdapter(this, categories);
 
         categorySpinner.setAdapter(adapter);
+        categorySpinner.setSelection(categories.size() - 1);
         //categorySpinner.setOnItemSelectedListener(this);
 
 
@@ -294,13 +308,14 @@ public class ItemsOfList extends AppCompatActivity {
 
 
         alertDialogBuilder
+                .setTitle(R.string.new_item_dialog_title)
                 .setPositiveButton(R.string.dialog_OK_btn,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                //String name = String.valueOf(userInput.getText());
-                                String name = String.valueOf(actv.getText());
+                                String name = String.valueOf(userInput.getText());
+                                //String name = String.valueOf(actv.getText());
                                 if (!name.equals("")) {
-                                    createNewItem(name, 1);
+                                    createNewItem();
                                     //categorySpinner.getSelectedItemPosition()
                                 }
                             }
@@ -318,9 +333,28 @@ public class ItemsOfList extends AppCompatActivity {
     }
 
 
-    private void createNewItem(String name, Integer pos) {
-        Toast.makeText(this, name + " " + String.valueOf(pos), Toast.LENGTH_LONG).show();
-    }
+    private void createNewItem() {
+        String name = String.valueOf(userInput.getText());
+        Integer categoryOrder = ((Ctgrs) categorySpinner.getSelectedItem()).categoryOrder;
+        Integer itemprice = 0;
+        if (!String.valueOf(price.getText()).equals("")) {
+            itemprice = Integer.valueOf(String.valueOf(price.getText()));
+        }
 
+        Integer itemquontity = 1;
+        if (!String.valueOf(quantity.getText()).equals("")) {
+            itemquontity = Integer.valueOf(String.valueOf(quantity.getText()));
+        }
+
+        long date = System.currentTimeMillis() / 1000;
+
+        //Toast.makeText(this, name + " " + String.valueOf(pos), Toast.LENGTH_LONG).show();
+        Items it = new Items(this);
+        it.addItemTest(currentList, categoryOrder, name, itemprice, itemquontity, 0, (int) date);
+        it.close();
+
+        categorizedList(currentList);
+
+    }
 
 }

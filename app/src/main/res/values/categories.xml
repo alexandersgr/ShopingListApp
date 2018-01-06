@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cg10" cid="10">Аксессуары</string>
-    <string name="cg20" cid="20">Алкоголь, табак</string>
-    <string name="cg30" cid="30">Бакалея</string>
-    <string name="cg40" cid="40">Замороженные продукты</string>
-    <string name="cg50" cid="50">Косметика, гигиена</string>
-    <string name="cg60" cid="60">Лекарства</string>
-    <string name="cg70" cid="70">Молочные продукты</string>
-    <string name="cg80" cid="80">Мясо, рыба, яйца</string>
-    <string name="cg90" cid="90">Напитки, соки</string>
-    <string name="cg100" cid="100">Обувь</string>
-    <string name="cg110" cid="110">Одежда</string>
-    <string name="cg120" cid="120">Товары для дома</string>
-    <string name="cg130" cid="130">Фрукты, овощи, соленья</string>
-    <string name="cg140" cid="140">Хлеб, выпечка, сладости</string>
-    <string name="cg150" cid="150">Электроника, бытовая техника</string>
-    <string name="cg9000" cid="9000">Other</string>
-
-
+    <string name="cg10">Аксессуары</string>
+    <string name="cg20">Алкоголь, табак</string>
+    <string name="cg30">Бакалея</string>
+    <string name="cg40">Замороженные продукты</string>
+    <string name="cg50">Косметика, гигиена</string>
+    <string name="cg60">Лекарства</string>
+    <string name="cg70">Молочные продукты</string>
+    <string name="cg80">Мясо, рыба, яйца</string>
+    <string name="cg90">Напитки, соки</string>
+    <string name="cg100">Обувь</string>
+    <string name="cg110">Одежда</string>
+    <string name="cg120">Товары для дома</string>
+    <string name="cg130">Фрукты, овощи, соленья</string>
+    <string name="cg140">Хлеб, выпечка, сладости</string>
+    <string name="cg150">Электроника, бытовая техника</string>
+    <string name="cg9000">Other</string>
 </resources>

@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +28,7 @@ public class DfItms {
 
         try {
 
-            InputStream is = context.getResources().openRawResource(R.raw.ctgs);
+            InputStream is = context.getResources().openRawResource(R.raw.defitems);
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -36,7 +37,7 @@ public class DfItms {
             Element element = doc.getDocumentElement();
             element.normalize();
 
-            NodeList nList = doc.getElementsByTagName("ctgs");
+            NodeList nList = doc.getElementsByTagName("defitem");
 
             for (int i = 0; i < nList.getLength(); i++) {
 
@@ -70,13 +71,13 @@ public class DfItms {
         return defitems;
     }
 
-    public ArrayList<DfItmsFiltered> filter(String query, ArrayList<DfItmsRaw> list) {
+    public ArrayList<DfItmsFiltered> filter(String query, ArrayList<?> list) {
 
         ArrayList<DfItmsFiltered> filteredList = new ArrayList<DfItmsFiltered>();
         DfItmsRaw currentItem;
 
         for (int i = 0; i < list.size(); i++) {
-            currentItem = list.get(i);
+            currentItem = (DfItmsRaw) list.get(i);
             int start = currentItem.DIName.toLowerCase().indexOf(query.toLowerCase());
             if (start >= 0) {
                 int length = query.length();
@@ -96,6 +97,18 @@ public class DfItms {
         }
 
         return filteredList;
+    }
+
+    public static Integer getitemIdbyCid(Integer cid, ArrayList<Ctgrs> list) {
+        Integer result = 0;
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).categoryOrder.equals(cid)) {
+                result = list.get(i).categoryId;
+                break;
+            }
+        }
+        return result;
     }
 
     public class DfItmsRaw {

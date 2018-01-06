@@ -132,7 +132,7 @@ public class Items extends SQLiteOpenHelper {
 
         String query = "select * from " + TABLE_ITEMS +
                 " where " + TABLE_ITEMS_LIST_ID + " = " + listid +
-                " order by " + TABLE_ITEMS_CATEGORY_ID + " desc, " + TABLE_ITEMS_KEY_DATE + " desc";
+                " order by " + TABLE_ITEMS_CATEGORY_ID + " asc, " + TABLE_ITEMS_KEY_DATE + " desc";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
