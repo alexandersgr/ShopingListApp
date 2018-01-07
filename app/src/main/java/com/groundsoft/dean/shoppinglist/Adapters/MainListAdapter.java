@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.groundsoft.dean.shoppinglist.Models.Items;
@@ -49,6 +48,9 @@ public class MainListAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+    }
+
+    public void reloadLists() {
 
         Lists li = new Lists(context);
         lists = li.getAllLists();
@@ -71,9 +73,16 @@ public class MainListAdapter extends BaseAdapter {
         }
 
 
+
         TextView listName = (TextView) item.findViewById(R.id.listName);
         listName.setText(lists.get(position).listname);
         listName.setTag(lists.get(position).id);
+
+        if (lists.get(position).checked) {
+            listName.setTextColor(Color.parseColor("#ff0000"));
+        } else {
+            listName.setTextColor(Color.parseColor("#000000"));
+        }
 
         TextView listDate = (TextView) item.findViewById(R.id.listDate);
         long dv = Long.valueOf(lists.get(position).date) * 1000;// its need to be in milisecond
@@ -84,10 +93,10 @@ public class MainListAdapter extends BaseAdapter {
         TextView listItems = (TextView) item.findViewById(R.id.listItems);
         listItems.setText(it.getFirstItems(lists.get(position).id, 3));
 
-        item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
+        //item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
         item.setBackgroundColor(colors[position % 2]);
 
-        item.setOnClickListener(listOnClick);
+        //item.setOnClickListener(listOnClick);
 
 
         it.close();
@@ -95,5 +104,28 @@ public class MainListAdapter extends BaseAdapter {
         ////////////
 
         return item;
+    }
+
+    public void setListChecked(Integer position, boolean checked) {
+        lists.get(position).checked = checked;
+        notifyDataSetChanged();
+    }
+
+    public void clearChecked() {
+        for (int i = 0; i < lists.size(); i++) {
+            lists.get(i).checked = false;
+        }
+        notifyDataSetChanged();
+    }
+
+    public void dropChecked() {
+        for (int i = 0; i < lists.size(); i++) {
+            if (lists.get(i).checked) {
+                lists.get(i).drop();
+                lists.remove(i);
+                i -= 1;
+            }
+        }
+        notifyDataSetChanged();
     }
 }

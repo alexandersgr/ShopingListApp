@@ -1,20 +1,28 @@
 package com.groundsoft.dean.shoppinglist;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories;
@@ -29,9 +37,11 @@ import java.util.Date;
 
 public class ShoppingListMainActivity extends AppCompatActivity {
 
-    int[] colors = new int[2];
-    ListView mlist;
-    MainListAdapter mla;
+    private int[] colors = new int[2];
+    private ListView mlist;
+    private MainListAdapter mla;
+    private boolean needRefresh = false;
+    private Toolbar toolbar;
 
     public View.OnClickListener listOnClick = new View.OnClickListener() {
         @Override
@@ -39,15 +49,36 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             listOnClick(v);
         }
     };
-    private boolean needRefresh = false;
+
+    private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //CheckedTextView v = (CheckedTextView) view;
+            //TextView tv = (TextView) findViewById(R.id.textView4);
+
+            //listName.getTag().toString()
+            //tv.setText(v.getText());
+
+            Integer listId = ((Lists)mla.getItem(position)).id;
+            openListActivity(listId);
+        }
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        //ActionBar actionBar = getActionBar();
+        //actionBar.hide();
+
+
+
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -68,17 +99,32 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         mla = new MainListAdapter(this, lists, listOnClick);
 
         mlist = (ListView) findViewById(R.id.list);
+
+
+
+
+        mlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        mlist.setMultiChoiceModeListener(new ModeCallback());
+        mlist.setOnItemClickListener(listOnItemClick);
         mlist.setAdapter(mla);
+
+
+
+        String[] mStrings = new String[]{"one","two","three"};
+        //mlist.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, mStrings));
 
 
     }
 
+
+
     protected void onResume() {
         super.onResume();
 
-        if (needRefresh){
+        if (needRefresh) {
+            mla.reloadLists();
             mla.notifyDataSetChanged();
-            needRefresh=false;
+            needRefresh = false;
         }
         //fillMainList();
     }
@@ -131,12 +177,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
     public void listOnClick(View view) {
-        TextView listName = (TextView) view.findViewById(R.id.listName);
+        //TextView listName = (TextView) view.findViewById(R.id.listName);
 
-        TextView tv = (TextView) findViewById(R.id.textView4);
-        tv.setText(listName.getTag().toString());
+        //CheckedTextView v = (CheckedTextView) view;
+        //TextView tv = (TextView) findViewById(R.id.textView4);
 
-        openListActivity((Integer) listName.getTag());
+        //listName.getTag().toString()
+        //tv.setText(v.getText());
+
+        //openListActivity((Integer) listName.getTag());
     }
 
     public void openListActivity(Integer listId) {
@@ -280,15 +329,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            TextView tv = (TextView) findViewById(R.id.textView4);
-            tv.setText("options");
+            //TextView tv = (TextView) findViewById(R.id.textView4);
+            //tv.setText("options");
             return true;
         }
 
         if (id == R.id.action_test1) {
 
-            TextView tv = (TextView) findViewById(R.id.textView4);
-            tv.setText("test1");
+            //TextView tv = (TextView) findViewById(R.id.textView4);
+            //tv.setText("test1");
 
             xmltest();
 
@@ -302,8 +351,76 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
 
     void xmltest() {
-
+        //TextView tv = (TextView) findViewById(R.id.textView4);
+        Snackbar.make(null, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        //test
     }
 
 
+    private class ModeCallback implements ListView.MultiChoiceModeListener {
+
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            toolbar.setVisibility(View.GONE);
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.list_ms_menu, menu);
+            mode.setTitle(R.string.main_list_ms_menu_title);
+            setSubtitle(mode);
+            return true;
+        }
+
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return true;
+        }
+
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.edit:
+
+                    break;
+                case R.id.delete:
+                    mla.dropChecked();
+                    //Toast.makeText(ShoppingListMainActivity.this, "del " + "", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(ShoppingListMainActivity.this, "Clicked " + item.getTitle(),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return true;
+        }
+
+        public void onDestroyActionMode(ActionMode mode) {
+            toolbar.setVisibility(View.VISIBLE);
+            mla.clearChecked();
+        }
+
+        public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+            setSubtitle(mode);
+            mla.setListChecked(position, checked);
+            //(Lists)mlist.getItemAtPosition(position);
+            //mlist.findViewById((int) id).
+            //mla.notifyDataSetChanged();
+            if (mlist.isItemChecked(3)){
+                mlist.setItemChecked(3,false);
+            }
+        }
+
+        private void setSubtitle(ActionMode mode) {
+            final int checkedCount = mlist.getCheckedItemCount();
+            switch (checkedCount) {
+                case 0:
+                    mode.setSubtitle(null);
+                    break;
+                case 1:
+                    mode.setSubtitle(R.string.main_list_ms_menu_subtitle1);
+                    break;
+                default:
+                    mode.setSubtitle("" + checkedCount + " " + getString(R.string.main_list_ms_menu_subtitle2));
+                    break;
+            }
+        }
+    }
+
 }
+
