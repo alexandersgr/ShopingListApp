@@ -96,12 +96,12 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         mlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         mlist.setMultiChoiceModeListener(new ModeCallback());
         mlist.setOnItemClickListener(listOnItemClick);
-        //mlist.setAdapter(mla);
+        mlist.setAdapter(mla);
 
 
 
         String[] mStrings = new String[]{"one","two","three"};
-        mlist.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, mStrings));
+        //mlist.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, mStrings));
 
 
     }
@@ -112,6 +112,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         super.onResume();
 
         if (needRefresh) {
+            mla.reloadLists();
             mla.notifyDataSetChanged();
             needRefresh = false;
         }
@@ -352,8 +353,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.menu_shopping_list_main, menu);
-            mode.setTitle("Select Items");
+            inflater.inflate(R.menu.list_ms_menu, menu);
+            mode.setTitle(R.string.main_list_ms_menu_title);
             setSubtitle(mode);
             return true;
         }
@@ -364,6 +365,13 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.edit:
+
+                    break;
+                case R.id.delete:
+                    mla.dropChecked();
+                    //Toast.makeText(ShoppingListMainActivity.this, "del " + "", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     Toast.makeText(ShoppingListMainActivity.this, "Clicked " + item.getTitle(),
                             Toast.LENGTH_SHORT).show();
@@ -373,11 +381,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         }
 
         public void onDestroyActionMode(ActionMode mode) {
-
+            mla.clearChecked();
         }
 
         public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
             setSubtitle(mode);
+            mla.setListChecked(position, checked);
+            //(Lists)mlist.getItemAtPosition(position);
+            //mlist.findViewById((int) id).
+            //mla.notifyDataSetChanged();
         }
 
         private void setSubtitle(ActionMode mode) {
@@ -387,10 +399,10 @@ public class ShoppingListMainActivity extends AppCompatActivity {
                     mode.setSubtitle(null);
                     break;
                 case 1:
-                    mode.setSubtitle("One item selected");
+                    mode.setSubtitle(R.string.main_list_ms_menu_subtitle1);
                     break;
                 default:
-                    mode.setSubtitle("" + checkedCount + " items selected");
+                    mode.setSubtitle("" + checkedCount + " " + getString(R.string.main_list_ms_menu_subtitle2));
                     break;
             }
         }

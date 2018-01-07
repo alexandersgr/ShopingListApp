@@ -13,6 +13,9 @@ public class Lists extends SQLiteOpenHelper {
     public String listname;
     public Integer date;
     public String items;
+    public boolean checked = false;
+
+    private Context context;
 
     static final String TABLE_LISTS = "lists";
     static final String TABLE_LISTS_KEY_ID = "id";
@@ -21,6 +24,7 @@ public class Lists extends SQLiteOpenHelper {
 
     public Lists(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -34,8 +38,9 @@ public class Lists extends SQLiteOpenHelper {
         DbConsts.upgradeAll(db, oldVersion, newVersion);
     }
 
-    public Lists(Integer id, String listname, Integer date) {
-        super(null, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
+    public Lists(Context context, Integer id, String listname, Integer date) {
+        super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
+        this.context=context;
         this.id = id;
         this.listname = listname;
         this.date = date;
@@ -89,6 +94,7 @@ public class Lists extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
             Lists li = new Lists(
+                    context,
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2)
@@ -99,5 +105,11 @@ public class Lists extends SQLiteOpenHelper {
         cursor.close();
 
         return listitems;
+    }
+
+    public void drop() {
+        String query = "delete from " + TABLE_LISTS + " where " + TABLE_LISTS_KEY_ID + "=" + this.id;
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(query);
     }
 }

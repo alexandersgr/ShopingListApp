@@ -11,7 +11,8 @@
         android:layout_gravity="top|start"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/listItems"

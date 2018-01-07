@@ -39,6 +39,7 @@ select * from "Items" where listid=21 order by categoryid asc, "date" desc]]></c
     <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.categories" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.defaultitems" active-filter-id="EMPTY_FILTER" />
     <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.Items" active-filter-id="EMPTY_FILTER" />
+    <filter-list connection-id="f34a19a4-83e4-4486-9736-c094674bc2ac" dataset="main.lists" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
