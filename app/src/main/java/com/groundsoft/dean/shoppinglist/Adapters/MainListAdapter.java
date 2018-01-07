@@ -73,6 +73,7 @@ public class MainListAdapter extends BaseAdapter {
         }
 
 
+
         TextView listName = (TextView) item.findViewById(R.id.listName);
         listName.setText(lists.get(position).listname);
         listName.setTag(lists.get(position).id);

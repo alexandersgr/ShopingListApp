@@ -1,5 +1,6 @@
 package com.groundsoft.dean.shoppinglist;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +41,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     private ListView mlist;
     private MainListAdapter mla;
     private boolean needRefresh = false;
-
+    private Toolbar toolbar;
 
     public View.OnClickListener listOnClick = new View.OnClickListener() {
         @Override
@@ -48,15 +49,18 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             listOnClick(v);
         }
     };
+
     private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            CheckedTextView v = (CheckedTextView) view;
-
-            TextView tv = (TextView) findViewById(R.id.textView4);
+            //CheckedTextView v = (CheckedTextView) view;
+            //TextView tv = (TextView) findViewById(R.id.textView4);
 
             //listName.getTag().toString()
-            tv.setText(v.getText());
+            //tv.setText(v.getText());
+
+            Integer listId = ((Lists)mla.getItem(position)).id;
+            openListActivity(listId);
         }
     };
 
@@ -65,8 +69,14 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        //ActionBar actionBar = getActionBar();
+        //actionBar.hide();
+
 
 
 
@@ -169,12 +179,11 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     public void listOnClick(View view) {
         //TextView listName = (TextView) view.findViewById(R.id.listName);
 
-        CheckedTextView v = (CheckedTextView) view;
-
-        TextView tv = (TextView) findViewById(R.id.textView4);
+        //CheckedTextView v = (CheckedTextView) view;
+        //TextView tv = (TextView) findViewById(R.id.textView4);
 
         //listName.getTag().toString()
-        tv.setText(v.getText());
+        //tv.setText(v.getText());
 
         //openListActivity((Integer) listName.getTag());
     }
@@ -320,15 +329,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            TextView tv = (TextView) findViewById(R.id.textView4);
-            tv.setText("options");
+            //TextView tv = (TextView) findViewById(R.id.textView4);
+            //tv.setText("options");
             return true;
         }
 
         if (id == R.id.action_test1) {
 
-            TextView tv = (TextView) findViewById(R.id.textView4);
-            tv.setText("test1");
+            //TextView tv = (TextView) findViewById(R.id.textView4);
+            //tv.setText("test1");
 
             xmltest();
 
@@ -342,8 +351,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
 
     void xmltest() {
-        TextView tv = (TextView) findViewById(R.id.textView4);
-        Snackbar.make(tv, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //TextView tv = (TextView) findViewById(R.id.textView4);
+        Snackbar.make(null, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
         //test
     }
@@ -352,6 +361,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     private class ModeCallback implements ListView.MultiChoiceModeListener {
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            toolbar.setVisibility(View.GONE);
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.list_ms_menu, menu);
             mode.setTitle(R.string.main_list_ms_menu_title);
@@ -381,6 +391,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         }
 
         public void onDestroyActionMode(ActionMode mode) {
+            toolbar.setVisibility(View.VISIBLE);
             mla.clearChecked();
         }
 
@@ -390,6 +401,9 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             //(Lists)mlist.getItemAtPosition(position);
             //mlist.findViewById((int) id).
             //mla.notifyDataSetChanged();
+            if (mlist.isItemChecked(3)){
+                mlist.setItemChecked(3,false);
+            }
         }
 
         private void setSubtitle(ActionMode mode) {
