@@ -1,9 +1,9 @@
 package com.groundsoft.dean.shoppinglist;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +41,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     private MainListAdapter mla;
     private boolean needRefresh = false;
     private Toolbar toolbar;
+    public static SQLiteDatabase dba;
+
 
     public View.OnClickListener listOnClick = new View.OnClickListener() {
         @Override
@@ -59,7 +60,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             //listName.getTag().toString()
             //tv.setText(v.getText());
 
-            Integer listId = ((Lists)mla.getItem(position)).id;
+            Integer listId = ((Lists) mla.getItem(position)).id;
             openListActivity(listId);
         }
     };
@@ -93,6 +94,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         //fillMainList();
 
         Lists li = new Lists(this);
+
+        dba = li.getDb();
         ArrayList<Lists> lists = li.getAllLists();
 
 
@@ -100,22 +103,22 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         mlist = (ListView) findViewById(R.id.list);
 
+        //getActivity();
 
+        MainListMultiChoiceModeListener modeListener =  new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
 
 
         mlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mlist.setMultiChoiceModeListener(new ModeCallback());
+        mlist.setMultiChoiceModeListener(modeListener);
         mlist.setOnItemClickListener(listOnItemClick);
         mlist.setAdapter(mla);
 
 
-
-        String[] mStrings = new String[]{"one","two","three"};
+        //String[] mStrings = new String[]{"one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three"};
         //mlist.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, mStrings));
 
 
     }
-
 
 
     protected void onResume() {
@@ -358,7 +361,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
 
-    private class ModeCallback implements ListView.MultiChoiceModeListener {
+    private class ModeCallback1 implements ListView.MultiChoiceModeListener {
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             toolbar.setVisibility(View.GONE);
@@ -401,8 +404,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             //(Lists)mlist.getItemAtPosition(position);
             //mlist.findViewById((int) id).
             //mla.notifyDataSetChanged();
-            if (mlist.isItemChecked(3)){
-                mlist.setItemChecked(3,false);
+            if (mlist.isItemChecked(3)) {
+                mlist.setItemChecked(3, false);
             }
         }
 

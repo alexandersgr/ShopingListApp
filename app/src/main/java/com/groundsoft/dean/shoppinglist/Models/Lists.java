@@ -22,9 +22,19 @@ public class Lists extends SQLiteOpenHelper {
     static final String TABLE_LISTS_KEY_NAME = "name";
     static final String TABLE_LISTS_KEY_DATE = "date";
 
+    SQLiteDatabase dba;
+
     public Lists(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
         this.context = context;
+
+        if(context!=null) {
+            dba = getWritableDatabase();
+        }
+    }
+
+    public SQLiteDatabase getDb(){
+        return dba;
     }
 
     @Override
@@ -48,14 +58,14 @@ public class Lists extends SQLiteOpenHelper {
 
 
     public long addList(String name, Integer date) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues vals = new ContentValues();
         vals.put(TABLE_LISTS_KEY_NAME, name);
         vals.put(TABLE_LISTS_KEY_DATE, date);
 
-        long res = db.insert(TABLE_LISTS, null, vals);
-        db.close();
+        long res = dba.insert(TABLE_LISTS, null, vals);
+        //db.close();
         return res;
     }
 
@@ -64,8 +74,8 @@ public class Lists extends SQLiteOpenHelper {
     }
 
     public Lists getList(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_LISTS,
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = dba.query(TABLE_LISTS,
                 new String[]{TABLE_LISTS_KEY_ID, TABLE_LISTS_KEY_NAME, TABLE_LISTS_KEY_DATE},
                 TABLE_LISTS_KEY_ID + "=" + id,
                 //new String[]{String.valueOf(id)},
@@ -89,8 +99,8 @@ public class Lists extends SQLiteOpenHelper {
         ArrayList listitems = new ArrayList<Lists>();
 
         String query = "select * from " + TABLE_LISTS + " order by date desc";  //id desc date desc
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = dba.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
             Lists li = new Lists(
@@ -109,7 +119,7 @@ public class Lists extends SQLiteOpenHelper {
 
     public void drop() {
         String query = "delete from " + TABLE_LISTS + " where " + TABLE_LISTS_KEY_ID + "=" + this.id;
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(query);
+        //SQLiteDatabase db = getWritableDatabase();
+        dba.execSQL(query);
     }
 }

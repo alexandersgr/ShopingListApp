@@ -6,18 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.groundsoft.dean.shoppinglist.ShoppingListMainActivity;
+
 public class Categories extends SQLiteOpenHelper {
     public Integer categoryId;
     public String categoryName;
     public Integer categoryOrder;
 
-     static final String TABLE_CATEGORIES = "categories";
-     static final String TABLE_CATEGORIES_KEY_ID = "id";
-     static final String TABLE_CATEGORIES_KEY_NAME = "name";
-     static final String TABLE_CATEGORIES_KEY_ORDER = "catorder";
+    static final String TABLE_CATEGORIES = "categories";
+    static final String TABLE_CATEGORIES_KEY_ID = "id";
+    static final String TABLE_CATEGORIES_KEY_NAME = "name";
+    static final String TABLE_CATEGORIES_KEY_ORDER = "catorder";
+    private SQLiteDatabase dba;
 
     public Categories(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
+
+        dba = ShoppingListMainActivity.dba;
     }
 
     @Override
@@ -44,8 +49,8 @@ public class Categories extends SQLiteOpenHelper {
     }
 
     public Categories getCategory(Integer categoryOrder) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_CATEGORIES,
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = dba.query(TABLE_CATEGORIES,
                 new String[]{TABLE_CATEGORIES_KEY_ID, TABLE_CATEGORIES_KEY_NAME, TABLE_CATEGORIES_KEY_ORDER},
                 TABLE_CATEGORIES_KEY_ORDER + "=" + categoryOrder,
                 //new String[]{String.valueOf(id)},
