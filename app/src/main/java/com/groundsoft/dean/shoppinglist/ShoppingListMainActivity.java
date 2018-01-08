@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,22 +15,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories;
 import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
+import com.groundsoft.dean.shoppinglist.Models.OneList;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 
 
 public class ShoppingListMainActivity extends AppCompatActivity {
@@ -60,7 +56,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             //listName.getTag().toString()
             //tv.setText(v.getText());
 
-            Integer listId = ((Lists) mla.getItem(position)).id;
+            Integer listId = ((OneList) mla.getItem(position)).id;
+
             openListActivity(listId);
         }
     };
@@ -96,10 +93,10 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         Lists li = new Lists(this);
 
         dba = li.getDb();
-        ArrayList<Lists> lists = li.getAllLists();
+        ArrayList<OneList> lists = li.getAllLists();
 
 
-        mla = new MainListAdapter(this, lists, listOnClick);
+        mla = new MainListAdapter(this, lists);
 
         mlist = (ListView) findViewById(R.id.list);
 
@@ -133,6 +130,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
     public void fillMainList() {
+
+        /*
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -177,6 +176,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         li.close();
         it.close();
+
+        */
     }
 
     public void listOnClick(View view) {

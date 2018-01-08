@@ -95,16 +95,15 @@ public class Lists extends SQLiteOpenHelper {
         return li;
     }
 
-    public ArrayList<Lists> getAllLists() {
-        ArrayList listitems = new ArrayList<Lists>();
+    public ArrayList<OneList> getAllLists() {
+        ArrayList listitems = new ArrayList<OneList>();
 
         String query = "select * from " + TABLE_LISTS + " order by date desc";  //id desc date desc
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = dba.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
-            Lists li = new Lists(
-                    context,
+            OneList li = new OneList(
                     cursor.getInt(0),
                     cursor.getString(1),
                     cursor.getInt(2)

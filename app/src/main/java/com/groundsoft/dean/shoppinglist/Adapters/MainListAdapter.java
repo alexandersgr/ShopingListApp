@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
+import com.groundsoft.dean.shoppinglist.Models.OneList;
 import com.groundsoft.dean.shoppinglist.R;
 
 import java.text.SimpleDateFormat;
@@ -18,20 +19,33 @@ import java.util.Date;
 
 public class MainListAdapter extends BaseAdapter {
 
-    private ArrayList<Lists> lists;
+    private ArrayList<OneList> lists;
     private Context context;
     private LayoutInflater lInflater;
-    View.OnClickListener listOnClick;
     private Items it;
 
 
-    public MainListAdapter(Context context, ArrayList<Lists> lists, View.OnClickListener event) {
-        this.lists = lists;
+    public MainListAdapter(Context context, ArrayList<OneList> list) {
+        this.lists = list;
         this.context = context;
-        this.listOnClick = event;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         it = new Items(context);
+
+        //long date = System.currentTimeMillis() / 1000;
+
+        //lists = new ArrayList<OneList>();
+
+/*
+        for (int i = 0; i < 30; i++) {
+            OneList testList = new OneList();
+            testList.date = (int) date;
+            testList.id = i;
+            testList.listname = "List #" + i;
+
+            lists.add(testList);
+        }
+        */
     }
 
     @Override
@@ -57,10 +71,18 @@ public class MainListAdapter extends BaseAdapter {
     public void reloadLists() {
 
         Lists li = new Lists(context);
-        lists = li.getAllLists();
+        //lists = li.getAllLists();
 
         li.close();
     }
+
+    static class ViewHolder {
+        TextView listName;
+        TextView listDate;
+        TextView listItems;
+    }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -69,32 +91,44 @@ public class MainListAdapter extends BaseAdapter {
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
+        ViewHolder vh;
 
         View item = convertView;
         if (item == null) {
             item = lInflater.inflate(R.layout.inflable_lists, parent, false);
+
+            vh = new ViewHolder();
+
+            vh.listName = (TextView) item.findViewById(R.id.listName);
+            vh.listDate = (TextView) item.findViewById(R.id.listDate);
+            vh.listItems = (TextView) item.findViewById(R.id.listItems);
+
+            item.setTag(vh);
+
+        } else {
+            vh = (ViewHolder) convertView.getTag();
         }
 
-        Lists currentItem = lists.get(position);
+        OneList currentItem = lists.get(position);
 
-        TextView listName = (TextView) item.findViewById(R.id.listName);
-        listName.setText(currentItem.listname);
-        listName.setTag(currentItem.id);
+        //TextView listName = (TextView) item.findViewById(R.id.listName);
+        vh.listName.setText(currentItem.listname);
+        vh.listName.setTag(currentItem.id);
 
         if (currentItem.checked) {
-            listName.setTextColor(Color.parseColor("#ff0000"));
+            vh.listName.setTextColor(Color.parseColor("#ff0000"));
         } else {
-            listName.setTextColor(Color.parseColor("#000000"));
+            vh.listName.setTextColor(Color.parseColor("#000000"));
         }
 
-        TextView listDate = (TextView) item.findViewById(R.id.listDate);
+        //TextView listDate = (TextView) item.findViewById(R.id.listDate);
         long dv = Long.valueOf(currentItem.date) * 1000;// its need to be in milisecond
         Date df = new java.util.Date(dv);
         String vv = new SimpleDateFormat("H:mm d MMM yy").format(df);
-        listDate.setText(vv);
+        vh.listDate.setText(vv);
 
-        TextView listItems = (TextView) item.findViewById(R.id.listItems);
-        listItems.setText(it.getFirstItems(currentItem.id, 3));
+        //TextView listItems = (TextView) item.findViewById(R.id.listItems);
+        vh.listItems.setText(it.getFirstItems(currentItem.id, 3));
 
         //item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
         item.setBackgroundColor(colors[position % 2]);
@@ -124,7 +158,7 @@ public class MainListAdapter extends BaseAdapter {
     public void dropChecked() {
         for (int i = 0; i < lists.size(); i++) {
             if (lists.get(i).checked) {
-                lists.get(i).drop();
+                //lists.get(i).drop();
                 lists.remove(i);
                 i -= 1;
             }
