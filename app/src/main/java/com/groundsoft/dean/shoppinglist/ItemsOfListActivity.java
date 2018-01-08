@@ -44,6 +44,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
     ItemsListAdapter ila;
     ArrayList<OneItem> items;
     ListView itemsList;
+    Ctgrs ct;
+
 
     private AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -126,6 +128,10 @@ public class ItemsOfListActivity extends AppCompatActivity {
         //categorizedList(currentList);
 
 
+        ct = new Ctgrs();
+        categories = ct.getAllCategories(this);
+
+
         items = createItemsList(currentList);
         ila = new ItemsListAdapter(this, items);
 
@@ -150,7 +156,6 @@ public class ItemsOfListActivity extends AppCompatActivity {
         OneItem newItem;
 
         Items it = new Items(this);
-        Ctgrs categories = new Ctgrs();
 
         ArrayList<OneItem> itemsdb = it.getItems2(listid);
 
@@ -158,45 +163,31 @@ public class ItemsOfListActivity extends AppCompatActivity {
 
         for (int i = 0; i < itemsdb.size(); i++) {
 
+            OneItem currentItem = itemsdb.get(i);
 
-            if (!currentItemCatId.equals(itemsdb.get(i).categoryid)) {
-
+            if (i == 0 || !currentItem.categoryid.equals(itemsdb.get(i - 1).categoryid)) {
                 newItem = new OneItem();
-                //newItem.id = i;
-                newItem.name = String.valueOf(itemsdb.get(i).categoryid);  //categories.getCategoryName(itemsdb.get(i).categoryid);
+                newItem.name = ct.getName(categories, itemsdb.get(i).categoryid);
                 newItem.itemType = OneItem.TYPE_CATEGORY;
 
                 items.add(newItem);
 
-                while (true) {
-
-                    OneItem currentItem = itemsdb.get(i);
-
-                    newItem = new OneItem();
-                    newItem.id = currentItem.id;
-                    newItem.name = currentItem.name;  //categories.getCategoryName(itemsdb.get(i).categoryid);
-                    newItem.itemType = OneItem.TYPE_ITEM;
-                    newItem.categoryid = currentItem.categoryid;
-                    newItem.date = currentItem.date;
-                    newItem.listid = currentItem.listid;
-                    newItem.price = currentItem.price;
-                    newItem.quantity = currentItem.quantity;
-
-                    items.add(newItem);
-
-
-                    if (i < itemsdb.size() - 1) {
-                        if (!currentItem.categoryid.equals(itemsdb.get(i + 1).categoryid)) {
-                            break;
-                        } else {
-                            i += 1;
-                        }
-                    } else {
-                        break;
-                    }
-                }
             }
-            currentItemCatId = itemsdb.get(i).categoryid;
+
+
+            newItem = new OneItem();
+            newItem.id = currentItem.id;
+            newItem.name = currentItem.name;  //categories.getCategoryName(itemsdb.get(i).categoryid);
+            newItem.itemType = OneItem.TYPE_ITEM;
+            newItem.categoryid = currentItem.categoryid;
+            newItem.date = currentItem.date;
+            newItem.listid = currentItem.listid;
+            newItem.price = currentItem.price;
+            newItem.quantity = currentItem.quantity;
+
+            items.add(newItem);
+
+
         }
         return items;
     }
@@ -349,9 +340,6 @@ public class ItemsOfListActivity extends AppCompatActivity {
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Ctgrs ct = new Ctgrs();
-
-        categories = ct.getAllCategories(this);
 
         CategoriesSpinnerAdapter adapter = new CategoriesSpinnerAdapter(this, categories);
 

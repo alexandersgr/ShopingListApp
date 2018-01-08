@@ -55,41 +55,45 @@ public class ItemsListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ItemViewHolder vh;
-
         View item = convertView;
-        if (item == null) {
-            item = lInflater.inflate(R.layout.inflable_items, parent, false);
 
-            vh = new ItemViewHolder();
-
-            vh.itemName = (TextView) item.findViewById(R.id.itemName);
-            vh.cb = (CheckBox) item.findViewById(R.id.checkBox);
-
-            item.setTag(vh);
-
-        } else {
-            vh = (ItemViewHolder) convertView.getTag();
-        }
 
         OneItem currentItem = items.get(position);
 
-        vh.itemName.setText(currentItem.name);
-        vh.itemName.setTag(currentItem.id);
+        if (currentItem.itemType == OneItem.TYPE_ITEM) {
 
-        vh.cb.setTag(currentItem.id);
-        if (currentItem.checked == 1) {
-            vh.cb.setChecked(true);
-        } else {
-            vh.cb.setChecked(false);
+            if (item == null || (int)item.getTag() != OneItem.TYPE_ITEM) {
+                item = lInflater.inflate(R.layout.inflable_items, parent, false);
+                item.setTag(OneItem.TYPE_ITEM);
+            }
+
+            TextView itemName = (TextView) item.findViewById(R.id.itemName);
+            CheckBox cb = (CheckBox) item.findViewById(R.id.checkBox);
+
+            itemName.setText(currentItem.name);
+            itemName.setTag(currentItem.id);
+
+            cb.setTag(currentItem.id);
+            if (currentItem.checked == 1) {
+                cb.setChecked(true);
+            } else {
+                cb.setChecked(false);
+            }
+
+            if (currentItem.MCMchecked) {
+                itemName.setTextColor(Color.parseColor("#ff0000"));
+            } else {
+                itemName.setTextColor(Color.parseColor("#000000"));
+            }
+        } else if (currentItem.itemType == OneItem.TYPE_CATEGORY) {
+            if (item == null || (int)item.getTag() != OneItem.TYPE_CATEGORY) {
+                item = lInflater.inflate(R.layout.inflable_category, parent, false);
+                item.setTag(OneItem.TYPE_CATEGORY);
+            }
+
+            TextView categoryName = (TextView) item.findViewById(R.id.categoryName);
+            categoryName.setText(currentItem.name);
         }
-
-        if (currentItem.MCMchecked) {
-            vh.itemName.setTextColor(Color.parseColor("#ff0000"));
-        } else {
-            vh.itemName.setTextColor(Color.parseColor("#000000"));
-        }
-
 
         return item;
     }
