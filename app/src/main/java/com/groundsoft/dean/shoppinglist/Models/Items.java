@@ -166,4 +166,35 @@ public class Items extends SQLiteOpenHelper {
         return items;
     }
 
+    public ArrayList<OneItem> getItems2(Integer listid) {
+        ArrayList items = new ArrayList<OneItem>();
+
+        //String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " order by " + TABLE_ITEMS_KEY_DATE + " desc";
+
+        String query = "select * from " + TABLE_ITEMS +
+                " where " + TABLE_ITEMS_LIST_ID + " = " + listid +
+                " order by " + TABLE_ITEMS_CATEGORY_ID + " asc, " + TABLE_ITEMS_KEY_DATE + " desc";
+
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db1.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            OneItem item = new OneItem();
+            item.id = cursor.getInt(0);
+            item.listid = cursor.getInt(1);
+            item.categoryid = cursor.getInt(2);
+            item.name = cursor.getString(3);
+            item.price = cursor.getInt(4);
+            item.quantity = cursor.getInt(5);
+            item.checked = cursor.getInt(6);
+            item.date = cursor.getInt(7);
+
+
+            items.add(item);
+        }
+
+        cursor.close();
+
+        return items;
+    }
 }

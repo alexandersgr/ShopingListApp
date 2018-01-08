@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,21 +16,21 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.groundsoft.dean.shoppinglist.Adapters.CategoriesSpinnerAdapter;
 import com.groundsoft.dean.shoppinglist.Adapters.ItemNameAdapter;
-import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Adapters.ItemsListAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
 import com.groundsoft.dean.shoppinglist.Models.DfItms;
 import com.groundsoft.dean.shoppinglist.Models.Items;
+import com.groundsoft.dean.shoppinglist.Models.OneItem;
 
 import java.util.ArrayList;
 
-public class ItemsOfList extends AppCompatActivity {
+public class ItemsOfListActivity extends AppCompatActivity {
 
     private Integer currentList;
     private Spinner categorySpinner;
@@ -42,6 +41,9 @@ public class ItemsOfList extends AppCompatActivity {
     EditText userInput = null;
     EditText price = null;
     EditText quantity = null;
+    ItemsListAdapter ila;
+    ArrayList<OneItem> items;
+    ListView itemsList;
 
     private AdapterView.OnItemClickListener actvOnClick = new AdapterView.OnItemClickListener() {
         @Override
@@ -121,16 +123,87 @@ public class ItemsOfList extends AppCompatActivity {
         currentList = intent.getIntExtra("listid", 0);
 
         //fillList(currentList);
-        categorizedList(currentList);
+        //categorizedList(currentList);
 
-        context = this;
+
+        items = createItemsList(currentList);
+        ila = new ItemsListAdapter(this, items);
+
+        //MainListMultiChoiceModeListener modeListener =  new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
+
+
+        itemsList = findViewById(R.id.itemsList);
+        itemsList.setAdapter(ila);
+        itemsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        //itemsList.setMultiChoiceModeListener(modeListener);
+        //itemsList.setOnItemClickListener(listOnItemClick);
 
         DfItms di = new DfItms();
         defItemsList = di.getAllDefItems(this);
 
     }
 
+
+    private ArrayList<OneItem> createItemsList(Integer listid) {
+
+        ArrayList<OneItem> items = new ArrayList<OneItem>();
+        OneItem newItem;
+
+        Items it = new Items(this);
+        Ctgrs categories = new Ctgrs();
+
+        ArrayList<OneItem> itemsdb = it.getItems2(listid);
+
+        Integer currentItemCatId = -1;
+
+        for (int i = 0; i < itemsdb.size(); i++) {
+
+
+            if (!currentItemCatId.equals(itemsdb.get(i).categoryid)) {
+
+                newItem = new OneItem();
+                //newItem.id = i;
+                newItem.name = String.valueOf(itemsdb.get(i).categoryid);  //categories.getCategoryName(itemsdb.get(i).categoryid);
+                newItem.itemType = OneItem.TYPE_CATEGORY;
+
+                items.add(newItem);
+
+                while (true) {
+
+                    OneItem currentItem = itemsdb.get(i);
+
+                    newItem = new OneItem();
+                    newItem.id = currentItem.id;
+                    newItem.name = currentItem.name;  //categories.getCategoryName(itemsdb.get(i).categoryid);
+                    newItem.itemType = OneItem.TYPE_ITEM;
+                    newItem.categoryid = currentItem.categoryid;
+                    newItem.date = currentItem.date;
+                    newItem.listid = currentItem.listid;
+                    newItem.price = currentItem.price;
+                    newItem.quantity = currentItem.quantity;
+
+                    items.add(newItem);
+
+
+                    if (i < itemsdb.size() - 1) {
+                        if (!currentItem.categoryid.equals(itemsdb.get(i + 1).categoryid)) {
+                            break;
+                        } else {
+                            i += 1;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            currentItemCatId = itemsdb.get(i).categoryid;
+        }
+        return items;
+    }
+
+
     private void categorizedList(Integer listid) {
+        /*
         int[] colors = new int[2];
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -206,11 +279,11 @@ public class ItemsOfList extends AppCompatActivity {
             currentItemCatId = lists.get(i).categoryid;
         }
 
-
+*/
     }
 
     private void fillList(Integer listid) {
-
+/*
         int[] colors = new int[2];
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -244,7 +317,7 @@ public class ItemsOfList extends AppCompatActivity {
 
             linLayout.addView(item);
         }
-
+*/
     }
 
     public void checkedClick(View v) {

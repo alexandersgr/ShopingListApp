@@ -1,4 +1,4 @@
-package com.groundsoft.dean.shoppinglist;
+package com.groundsoft.dean.shoppinglist.MultiChoiceModeListeners;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,13 +7,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
+import com.groundsoft.dean.shoppinglist.R;
+
 
 public class MainListMultiChoiceModeListener implements ListView.MultiChoiceModeListener {
+
 
     Context context;
     MenuInflater inflater;
@@ -79,9 +81,7 @@ public class MainListMultiChoiceModeListener implements ListView.MultiChoiceMode
         //(Lists)mlist.getItemAtPosition(position);
         //mlist.findViewById((int) id).
         //mla.notifyDataSetChanged();
-        if (mlist.isItemChecked(3)) {
-            mlist.setItemChecked(3, false);
-        }
+        //if (mlist.isItemChecked(3)) {mlist.setItemChecked(3, false);}
     }
 
     private void setSubtitle(ActionMode mode) {

@@ -71,12 +71,12 @@ public class MainListAdapter extends BaseAdapter {
     public void reloadLists() {
 
         Lists li = new Lists(context);
-        //lists = li.getAllLists();
+        lists = li.getAllLists();
 
         li.close();
     }
 
-    static class ViewHolder {
+    static class ListItemViewHolder {
         TextView listName;
         TextView listDate;
         TextView listItems;
@@ -91,13 +91,13 @@ public class MainListAdapter extends BaseAdapter {
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
 
-        ViewHolder vh;
+        ListItemViewHolder vh;
 
         View item = convertView;
         if (item == null) {
             item = lInflater.inflate(R.layout.inflable_lists, parent, false);
 
-            vh = new ViewHolder();
+            vh = new ListItemViewHolder();
 
             vh.listName = (TextView) item.findViewById(R.id.listName);
             vh.listDate = (TextView) item.findViewById(R.id.listDate);
@@ -106,7 +106,7 @@ public class MainListAdapter extends BaseAdapter {
             item.setTag(vh);
 
         } else {
-            vh = (ViewHolder) convertView.getTag();
+            vh = (ListItemViewHolder) convertView.getTag();
         }
 
         OneList currentItem = lists.get(position);
