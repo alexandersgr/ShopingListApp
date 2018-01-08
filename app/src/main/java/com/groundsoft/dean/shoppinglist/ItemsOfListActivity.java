@@ -27,6 +27,7 @@ import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
 import com.groundsoft.dean.shoppinglist.Models.DfItms;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.OneItem;
+import com.groundsoft.dean.shoppinglist.MultiChoiceModeListeners.ItemsListMultiChoiceModeListener;
 
 import java.util.ArrayList;
 
@@ -97,17 +98,21 @@ public class ItemsOfListActivity extends AppCompatActivity {
                     lpw.show();
                 }
 
-
             } else {
                 lpw.dismiss();
             }
-
-
         }
 
         @Override
         public void afterTextChanged(Editable s) {
 
+        }
+    };
+
+    private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //
         }
     };
 
@@ -135,14 +140,17 @@ public class ItemsOfListActivity extends AppCompatActivity {
         items = createItemsList(currentList);
         ila = new ItemsListAdapter(this, items);
 
-        //MainListMultiChoiceModeListener modeListener =  new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
-
-
         itemsList = findViewById(R.id.itemsList);
+
+        ItemsListMultiChoiceModeListener modeListener =  new ItemsListMultiChoiceModeListener(
+                this, getMenuInflater(), this, toolbar, ila, items, itemsList);
+
+
+
         itemsList.setAdapter(ila);
         itemsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        //itemsList.setMultiChoiceModeListener(modeListener);
-        //itemsList.setOnItemClickListener(listOnItemClick);
+        itemsList.setMultiChoiceModeListener(modeListener);
+        itemsList.setOnItemClickListener(listOnItemClick);
 
         DfItms di = new DfItms();
         defItemsList = di.getAllDefItems(this);

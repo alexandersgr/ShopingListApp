@@ -47,6 +47,29 @@ public class ItemsListAdapter extends BaseAdapter {
         this.items = items;
     }
 
+    public void setListChecked(Integer position, boolean checked) {
+        items.get(position).MCMchecked = checked;
+        notifyDataSetChanged();
+    }
+
+    public void clearChecked() {
+        for (int i = 0; i < items.size(); i++) {
+            items.get(i).MCMchecked = false;
+        }
+        notifyDataSetChanged();
+    }
+
+    public void dropChecked() {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).MCMchecked) {
+                //lists.get(i).drop();
+                items.remove(i);
+                i -= 1;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     static class ItemViewHolder {
         TextView itemName;
         CheckBox cb;
@@ -72,6 +95,8 @@ public class ItemsListAdapter extends BaseAdapter {
 
             itemName.setText(currentItem.name);
             itemName.setTag(currentItem.id);
+
+            //cb.setOnClickListener(checkedClick);
 
             cb.setTag(currentItem.id);
             if (currentItem.checked == 1) {
