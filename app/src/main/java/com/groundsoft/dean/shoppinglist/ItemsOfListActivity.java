@@ -323,7 +323,10 @@ public class ItemsOfListActivity extends AppCompatActivity {
     public void checkedClick(View v) {
 
         Integer itemId = (Integer) ((CheckBox) v).getTag();
-        new Items(this).updateItemCheckedStatus(itemId, ((CheckBox) v).isChecked() ? 1 : 0);
+        Integer ch = ((CheckBox) v).isChecked() ? 1 : 0;
+        new Items(this).updateItemCheckedStatus(itemId, ch);
+
+        ila.updateChecked(itemId, ch);
 
     }
 

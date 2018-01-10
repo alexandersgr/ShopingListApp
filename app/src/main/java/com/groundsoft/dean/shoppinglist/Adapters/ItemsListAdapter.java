@@ -2,6 +2,7 @@ package com.groundsoft.dean.shoppinglist.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +125,17 @@ public class ItemsListAdapter extends BaseAdapter {
 
     }
 
+    public void updateChecked(Integer itemId, Integer ch) {
+        for (int i = 0; i < items.size(); i++) {
+            OneItem currentItem = items.get(i);
+            if (currentItem.itemType==OneItem.TYPE_ITEM  && currentItem.id.equals(itemId)){
+                currentItem.checked = ch;
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     static class ItemViewHolder {
         TextView itemName;
         CheckBox cb;
@@ -149,6 +161,15 @@ public class ItemsListAdapter extends BaseAdapter {
 
             itemName.setText(currentItem.name);
             itemName.setTag(currentItem.id);
+
+            if (currentItem.checked==1){
+                itemName.setPaintFlags(itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }else {
+                itemName.setPaintFlags(itemName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            }
+
+
+
 
             //cb.setOnClickListener(checkedClick);
 
