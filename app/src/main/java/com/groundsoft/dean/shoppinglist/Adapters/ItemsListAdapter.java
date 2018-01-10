@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.groundsoft.dean.shoppinglist.Models.Ctgrs;
+import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.OneItem;
 import com.groundsoft.dean.shoppinglist.R;
 
@@ -19,13 +21,25 @@ public class ItemsListAdapter extends BaseAdapter {
     private ArrayList<OneItem> items;
     private Context context;
     private LayoutInflater lInflater;
-    private Integer listid;
+    private Items it;
+    private Integer currentList;
+    private Ctgrs ct;
+    private ArrayList<Ctgrs> categories;
 
-    public ItemsListAdapter(Context context, ArrayList<OneItem> items) {
+    public ItemsListAdapter(Context context, Integer currentList, Ctgrs ct, ArrayList<Ctgrs> categories) {
         this.context = context;
-        this.items = items;
+        //this.items = items; ArrayList<OneItem> items,
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+
+
+        it = new Items(context);
+        this.currentList = currentList;
+        this.ct = ct;
+        this.categories = categories;
+
+
+        refreshList();
     }
 
     @Override
@@ -43,9 +57,6 @@ public class ItemsListAdapter extends BaseAdapter {
         return position;
     }
 
-    public void reloadLists(ArrayList<OneItem> items) {
-        this.items = items;
-    }
 
     public void setListChecked(Integer position, boolean checked) {
         items.get(position).MCMchecked = checked;
@@ -63,11 +74,54 @@ public class ItemsListAdapter extends BaseAdapter {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).MCMchecked) {
                 //lists.get(i).drop();
+                it.dropItem(items.get(i).id);
                 items.remove(i);
                 i -= 1;
             }
         }
+
+        refreshList();
         notifyDataSetChanged();
+    }
+
+    public void refreshList() {
+
+        ArrayList<OneItem> items = new ArrayList<OneItem>();
+        OneItem newItem;
+
+        ArrayList<OneItem> itemsdb = it.getItems2(currentList);
+
+        for (int i = 0; i < itemsdb.size(); i++) {
+
+            OneItem currentItem = itemsdb.get(i);
+
+            if (i == 0 || !currentItem.categoryid.equals(itemsdb.get(i - 1).categoryid)) {
+                newItem = new OneItem();
+                newItem.name = ct.getName(categories, itemsdb.get(i).categoryid);
+                newItem.itemType = OneItem.TYPE_CATEGORY;
+
+                items.add(newItem);
+
+            }
+
+
+            newItem = new OneItem();
+            newItem.id = currentItem.id;
+            newItem.name = currentItem.name;  //categories.getCategoryName(itemsdb.get(i).categoryid);
+            newItem.itemType = OneItem.TYPE_ITEM;
+            newItem.categoryid = currentItem.categoryid;
+            newItem.date = currentItem.date;
+            newItem.listid = currentItem.listid;
+            newItem.price = currentItem.price;
+            newItem.quantity = currentItem.quantity;
+            newItem.checked = currentItem.checked;
+
+            items.add(newItem);
+
+
+        }
+        this.items= items;
+
     }
 
     static class ItemViewHolder {

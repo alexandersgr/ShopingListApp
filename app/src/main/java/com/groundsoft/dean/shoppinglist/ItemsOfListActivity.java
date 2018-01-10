@@ -138,8 +138,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
         categories = ct.getAllCategories(this);
 
 
-        items = createItemsList(currentList);
-        ila = new ItemsListAdapter(this, items);
+        //items = createItemsList(currentList);
+        ila = new ItemsListAdapter(this, currentList, ct, categories);
 
         itemsList = findViewById(R.id.itemsList);
 
@@ -424,6 +424,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
         it.close();
 
         //categorizedList(currentList);
+
+        ila.refreshList();
 
         ila.notifyDataSetChanged();
 

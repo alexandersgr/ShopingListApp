@@ -197,4 +197,9 @@ public class Items extends SQLiteOpenHelper {
 
         return items;
     }
+
+    public void dropItem(Integer itemId){
+        String query = "delete from " + TABLE_ITEMS + " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
+        db1.execSQL(query);
+    }
 }

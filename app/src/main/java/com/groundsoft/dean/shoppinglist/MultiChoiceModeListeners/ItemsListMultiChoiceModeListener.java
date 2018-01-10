@@ -43,7 +43,7 @@ public class ItemsListMultiChoiceModeListener implements ListView.MultiChoiceMod
         toolbar.setVisibility(View.GONE);
 
         inflater = activity.getMenuInflater();
-        inflater.inflate(R.menu.list_ms_menu, menu);
+        inflater.inflate(R.menu.items_ms_menu, menu);
         mode.setTitle(R.string.main_list_ms_menu_title);
         setSubtitle(mode);
         return true;
@@ -57,12 +57,9 @@ public class ItemsListMultiChoiceModeListener implements ListView.MultiChoiceMod
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.edit:
-
-                break;
             case R.id.delete:
-                //ila.dropChecked();
-                //Toast.makeText(ShoppingListMainActivity.this, "del " + "", Toast.LENGTH_SHORT).show();
+                ila.dropChecked();
+                mode.finish();
                 break;
             default:
                 Toast.makeText(activity, "Clicked " + item.getTitle(),
