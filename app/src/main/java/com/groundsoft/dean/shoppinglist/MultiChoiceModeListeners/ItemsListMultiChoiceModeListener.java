@@ -61,7 +61,7 @@ public class ItemsListMultiChoiceModeListener implements ListView.MultiChoiceMod
 
                 break;
             case R.id.delete:
-                //mla.dropChecked();
+                //ila.dropChecked();
                 //Toast.makeText(ShoppingListMainActivity.this, "del " + "", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -80,12 +80,17 @@ public class ItemsListMultiChoiceModeListener implements ListView.MultiChoiceMod
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+        if (((OneItem) ilist.getItemAtPosition(position)).itemType == OneItem.TYPE_CATEGORY) {
+            if (ilist.isItemChecked(position)) {
+                ilist.setItemChecked(position, false);
+            }
+
+        } else {
+            ila.setListChecked(position, checked);
+        }
+
         setSubtitle(mode);
-        ila.setListChecked(position, checked);
-        //(Lists)mlist.getItemAtPosition(position);
-        //mlist.findViewById((int) id).
-        //mla.notifyDataSetChanged();
-        //if (mlist.isItemChecked(3)) {mlist.setItemChecked(3, false);}
     }
 
     private void setSubtitle(ActionMode mode) {

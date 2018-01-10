@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.groundsoft.dean.shoppinglist.ShoppingListMainActivity;
 
-public class Categories extends SQLiteOpenHelper {
+public class Categories1 extends SQLiteOpenHelper {
     public Integer categoryId;
     public String categoryName;
     public Integer categoryOrder;
@@ -19,7 +19,7 @@ public class Categories extends SQLiteOpenHelper {
     static final String TABLE_CATEGORIES_KEY_ORDER = "catorder";
     private SQLiteDatabase dba;
 
-    public Categories(Context context) {
+    public Categories1(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
 
         dba = ShoppingListMainActivity.dba;
@@ -48,7 +48,7 @@ public class Categories extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Categories getCategory(Integer categoryOrder) {
+    public Categories1 getCategory(Integer categoryOrder) {
         //SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = dba.query(TABLE_CATEGORIES,
                 new String[]{TABLE_CATEGORIES_KEY_ID, TABLE_CATEGORIES_KEY_NAME, TABLE_CATEGORIES_KEY_ORDER},
@@ -56,7 +56,7 @@ public class Categories extends SQLiteOpenHelper {
                 //new String[]{String.valueOf(id)},
                 null, null, null, null);
 
-        Categories categories = new Categories(null);
+        Categories1 categories = new Categories1(null);
 
         while (cursor.moveToNext()) {
 

@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
-import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.Categories1;
 import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
@@ -211,7 +211,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     public void fillDb(View v) {
         Lists li = new Lists(this);
         Items it = new Items(this);
-        Categories cat = new Categories(this);
+        Categories1 cat = new Categories1(this);
         DefItems di = new DefItems(this);
 
         long x = System.currentTimeMillis() - 60000000;

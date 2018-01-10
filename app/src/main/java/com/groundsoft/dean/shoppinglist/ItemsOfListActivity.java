@@ -112,7 +112,7 @@ public class ItemsOfListActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //
+            //TODO: вызвать диалог редактирования item
         }
     };
 
@@ -132,6 +132,7 @@ public class ItemsOfListActivity extends AppCompatActivity {
         //fillList(currentList);
         //categorizedList(currentList);
 
+        context = this;
 
         ct = new Ctgrs();
         categories = ct.getAllCategories(this);
@@ -142,9 +143,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
 
         itemsList = findViewById(R.id.itemsList);
 
-        ItemsListMultiChoiceModeListener modeListener =  new ItemsListMultiChoiceModeListener(
+        ItemsListMultiChoiceModeListener modeListener = new ItemsListMultiChoiceModeListener(
                 this, getMenuInflater(), this, toolbar, ila, items, itemsList);
-
 
 
         itemsList.setAdapter(ila);
@@ -192,6 +192,7 @@ public class ItemsOfListActivity extends AppCompatActivity {
             newItem.listid = currentItem.listid;
             newItem.price = currentItem.price;
             newItem.quantity = currentItem.quantity;
+            newItem.checked = currentItem.checked;
 
             items.add(newItem);
 
@@ -422,7 +423,9 @@ public class ItemsOfListActivity extends AppCompatActivity {
         it.addItemTest(currentList, categoryOrder, name, itemprice, itemquontity, 0, (int) date);
         it.close();
 
-        categorizedList(currentList);
+        //categorizedList(currentList);
+
+        ila.notifyDataSetChanged();
 
     }
 

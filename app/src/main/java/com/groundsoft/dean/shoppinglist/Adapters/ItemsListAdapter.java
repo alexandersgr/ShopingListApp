@@ -98,6 +98,8 @@ public class ItemsListAdapter extends BaseAdapter {
 
             //cb.setOnClickListener(checkedClick);
 
+            cb.setFocusable(false);
+
             cb.setTag(currentItem.id);
             if (currentItem.checked == 1) {
                 cb.setChecked(true);
@@ -105,19 +107,24 @@ public class ItemsListAdapter extends BaseAdapter {
                 cb.setChecked(false);
             }
 
+
             if (currentItem.MCMchecked) {
                 itemName.setTextColor(Color.parseColor("#ff0000"));
             } else {
                 itemName.setTextColor(Color.parseColor("#000000"));
             }
+
+
         } else if (currentItem.itemType == OneItem.TYPE_CATEGORY) {
             if (item == null || (int)item.getTag() != OneItem.TYPE_CATEGORY) {
                 item = lInflater.inflate(R.layout.inflable_category, parent, false);
+
                 item.setTag(OneItem.TYPE_CATEGORY);
             }
 
             TextView categoryName = (TextView) item.findViewById(R.id.categoryName);
             categoryName.setText(currentItem.name);
+
         }
 
         return item;
