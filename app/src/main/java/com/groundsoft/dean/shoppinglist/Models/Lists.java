@@ -60,8 +60,10 @@ public class Lists extends SQLiteOpenHelper {
     public long addList(String name, Integer date) {
         //SQLiteDatabase db = this.getWritableDatabase();
 
+        String safeName = name.replace("'","''");
+
         ContentValues vals = new ContentValues();
-        vals.put(TABLE_LISTS_KEY_NAME, name);
+        vals.put(TABLE_LISTS_KEY_NAME, safeName);
         vals.put(TABLE_LISTS_KEY_DATE, date);
 
         long res = dba.insert(TABLE_LISTS, null, vals);

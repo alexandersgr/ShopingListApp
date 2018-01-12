@@ -34,7 +34,8 @@
       <console name="Connection" type="STANDARD"><![CDATA[select catorder,name from categories
 select * from "Items" where listid=21 order by categoryid asc, "date" desc
 create table test1 (_id integer primary key, price_real real, price_float float, price_dec DECIMAL(10,5));
-select * from test1;]]></console>
+select * from "Items" where id=1;
+insert into "Items" (name) values ('sss''sssss''''ssssssssssssss');]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">

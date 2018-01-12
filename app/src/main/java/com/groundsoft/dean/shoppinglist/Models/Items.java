@@ -88,11 +88,13 @@ public class Items extends SQLiteOpenHelper {
     public Integer addItemTest(Integer listid, Integer categoryid, String name, Float price, Float quantity, Integer checked, Integer date) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        String safeName = name.replace("'","''");
+
         ContentValues vals = new ContentValues();
         vals.put(TABLE_ITEMS_LIST_ID, listid);
         vals.put(TABLE_ITEMS_CATEGORY_ID, categoryid);
 
-        vals.put(TABLE_ITEMS_KEY_NAME, name);
+        vals.put(TABLE_ITEMS_KEY_NAME, safeName);
         vals.put(TABLE_ITEMS_KEY_PRICE, price);
         vals.put(TABLE_ITEMS_KEY_QUANTITY, quantity);
         vals.put(TABLE_ITEMS_KEY_CHECKED, checked);
@@ -199,19 +201,21 @@ public class Items extends SQLiteOpenHelper {
         return items;
     }
 
-    public void dropItem(Integer itemId){
+    public void dropItem(Integer itemId) {
         String query = "delete from " + TABLE_ITEMS + " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
         db1.execSQL(query);
     }
 
 
-
     public void updateItem(Integer itemId, Integer categoryOrder, String name, Float itemprice, Float itemquontity) {
+
+        String safeName = name.replace("'","''");
+
         String query = "update " + TABLE_ITEMS + " set " +
-                TABLE_ITEMS_CATEGORY_ID + "=" + categoryOrder +", " +
-                TABLE_ITEMS_KEY_NAME + "=" + name +", " +
-                TABLE_ITEMS_KEY_PRICE + "=" + itemprice +", " +
-                TABLE_ITEMS_KEY_QUANTITY + "=" + itemquontity +", " +
+                TABLE_ITEMS_CATEGORY_ID + "=" + categoryOrder + ", " +
+                TABLE_ITEMS_KEY_NAME + "='" + safeName + "', " +
+                TABLE_ITEMS_KEY_PRICE + "=" + itemprice + ", " +
+                TABLE_ITEMS_KEY_QUANTITY + "=" + itemquontity +
                 " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
         db1.execSQL(query);
     }

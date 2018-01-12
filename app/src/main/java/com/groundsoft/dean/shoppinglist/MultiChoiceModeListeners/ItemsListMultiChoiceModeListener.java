@@ -57,13 +57,15 @@ public class ItemsListMultiChoiceModeListener implements ListView.MultiChoiceMod
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.edit:
+                //TODO: edit list name (2nd)
+                break;
             case R.id.delete:
                 ila.dropChecked();
                 mode.finish();
                 break;
             default:
-                Toast.makeText(activity, "Clicked " + item.getTitle(),
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(activity, "Clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;

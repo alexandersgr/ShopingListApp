@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
 import com.groundsoft.dean.shoppinglist.R;
+import com.groundsoft.dean.shoppinglist.ShoppingListMainActivity;
 
 
 public class MainListMultiChoiceModeListener implements ListView.MultiChoiceModeListener {
@@ -54,7 +55,11 @@ public class MainListMultiChoiceModeListener implements ListView.MultiChoiceMode
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-
+                //TODO: edit list name
+                ((ShoppingListMainActivity)context).listNameEditDialog();
+                break;
+            case R.id.copy:
+                //TODO: copy list
                 break;
             case R.id.delete:
                 mla.dropChecked();

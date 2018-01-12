@@ -114,7 +114,6 @@ public class ItemsOfListActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //TODO: вызвать диалог редактирования item
             updateItemDialog(view, position);
         }
     };
@@ -412,6 +411,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
     private void createNewItem() {
         String name = String.valueOf(userInput.getText());
         Integer categoryOrder = ((Ctgrs) categorySpinner.getSelectedItem()).categoryOrder;
+
+        //TODO: регекспов сюда
         Float itemprice = 0f;
         if (!String.valueOf(price.getText()).equals("")) {
             itemprice = Float.valueOf(String.valueOf(price.getText()));
