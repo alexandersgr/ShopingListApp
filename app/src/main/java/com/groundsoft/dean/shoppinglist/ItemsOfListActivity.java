@@ -30,6 +30,8 @@ import com.groundsoft.dean.shoppinglist.Models.OneItem;
 import com.groundsoft.dean.shoppinglist.MultiChoiceModeListeners.ItemsListMultiChoiceModeListener;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ItemsOfListActivity extends AppCompatActivity {
 
@@ -113,6 +115,7 @@ public class ItemsOfListActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //TODO: вызвать диалог редактирования item
+            updateItemDialog(view, position);
         }
     };
 
@@ -409,14 +412,14 @@ public class ItemsOfListActivity extends AppCompatActivity {
     private void createNewItem() {
         String name = String.valueOf(userInput.getText());
         Integer categoryOrder = ((Ctgrs) categorySpinner.getSelectedItem()).categoryOrder;
-        Integer itemprice = 0;
+        Float itemprice = 0f;
         if (!String.valueOf(price.getText()).equals("")) {
-            itemprice = Integer.valueOf(String.valueOf(price.getText()));
+            itemprice = Float.valueOf(String.valueOf(price.getText()));
         }
 
-        Integer itemquontity = 1;
+        Float itemquontity = 1f;
         if (!String.valueOf(quantity.getText()).equals("")) {
-            itemquontity = Integer.valueOf(String.valueOf(quantity.getText()));
+            itemquontity = Float.valueOf(String.valueOf(quantity.getText()));
         }
 
         long date = System.currentTimeMillis() / 1000;
@@ -433,5 +436,122 @@ public class ItemsOfListActivity extends AppCompatActivity {
         ila.notifyDataSetChanged();
 
     }
+
+    private void updateItemDialog(View view, int position) {
+
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.dialog_add_item, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptsView);
+
+
+        userInput = (EditText) promptsView.findViewById(R.id.newItemName);
+        price = (EditText) promptsView.findViewById(R.id.editPrice);
+        quantity = (EditText) promptsView.findViewById(R.id.editQuantity);
+
+        categorySpinner = promptsView.findViewById(R.id.categorySpinner);
+
+        CategoriesSpinnerAdapter adapter = new CategoriesSpinnerAdapter(this, categories);
+
+        categorySpinner.setAdapter(adapter);
+        //categorySpinner.setSelection(categories.size() - 1);
+
+
+        lpw = new ListPopupWindow(this);
+        lpw.setAnchorView(userInput);
+        lpw.setOnItemClickListener(lpwOnClick);
+
+        userInput.addTextChangedListener(itemNameOnTextChange);
+
+
+        final OneItem item = (OneItem) itemsList.getItemAtPosition(position);
+
+        userInput.setText(item.name);
+        if (item.price != null && item.price > 0) {
+            price.setText(String.valueOf(item.price));
+        }
+
+        if (item.quantity != null && item.quantity > 0) {
+            quantity.setText(String.valueOf(item.quantity));
+        }
+
+        categorySpinner.setSelection(ct.getId(categories, item.categoryid));
+
+
+        alertDialogBuilder
+                .setTitle(R.string.update_item_dialog_title)
+                .setPositiveButton(R.string.update_item_dialog_save_btn,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String name = String.valueOf(userInput.getText());
+                                //String name = String.valueOf(actv.getText());
+                                if (!name.equals("")) {
+                                    updateItem(item.id);
+                                    //categorySpinner.getSelectedItemPosition()
+                                }
+                            }
+                        })
+                .setNegativeButton(R.string.dialog_Cancel_btn,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+
+
+    public void updateItem(Integer itemId) {
+        String name = String.valueOf(userInput.getText());
+        Integer categoryOrder = ((Ctgrs) categorySpinner.getSelectedItem()).categoryOrder;
+
+
+        Float itemprice = 0f;
+        String pr = String.valueOf(price.getText());
+        if (!pr.equals("")) {
+            try {
+                Matcher m = Pattern.compile("\\d+(\\.\\d+)?").matcher(pr);
+                m.find();
+                itemprice = Float.parseFloat(m.group());
+            } catch (Exception ex) {
+                itemprice = 0f;
+            }
+        }
+
+
+        Float itemquontity = 1f;
+        String qu = String.valueOf(quantity.getText());
+
+        if (!qu.equals("")) {
+            try {
+                Matcher m = Pattern.compile("\\d+(\\.\\d+)?").matcher(qu);
+                m.find();
+                itemquontity = Float.parseFloat(m.group());
+            } catch (Exception ex) {
+                itemquontity = 1f;
+            }
+        }
+
+
+        //Toast.makeText(this, String.valueOf(itemquontity), Toast.LENGTH_LONG).show();
+
+        Items it = new Items(this);
+        //it.addItemTest(currentList,  0, (int) date);
+        it.updateItem(itemId, categoryOrder, name, itemprice, itemquontity);
+        it.close();
+
+        //categorizedList(currentList);
+
+        ila.refreshList();
+
+        ila.notifyDataSetChanged();
+
+    }
+
 
 }

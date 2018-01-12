@@ -5,8 +5,8 @@ public class OneItem {
     public Integer id;
     public Integer listid;
     public Integer categoryid;
-    public Integer quantity;
-    public Integer price;
+    public Float quantity;
+    public Float price;
     public String name;
     public Integer checked = 0;
     public Integer date;

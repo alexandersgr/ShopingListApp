@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cg10">Аксессуары</string>
-    <string name="cg20">Алкоголь, табак</string>
-    <string name="cg30">Бакалея</string>
-    <string name="cg40">Замороженные продукты</string>
-    <string name="cg50">Косметика, гигиена</string>
-    <string name="cg60">Лекарства</string>
-    <string name="cg70">Молочные продукты</string>
-    <string name="cg80">Мясо, рыба, яйца</string>
-    <string name="cg90">Напитки, соки</string>
-    <string name="cg100">Обувь</string>
-    <string name="cg110">Одежда</string>
-    <string name="cg120">Товары для дома</string>
-    <string name="cg130">Фрукты, овощи, соленья</string>
-    <string name="cg140">Хлеб, выпечка, сладости</string>
-    <string name="cg150">Электроника, бытовая техника</string>
+    <string name="cg10">Accessories</string>
+    <string name="cg20">Alcohol, tobacco</string>
+    <string name="cg30">Grocery</string>
+    <string name="cg40">Frozen food</string>
+    <string name="cg50">Cosmetics, hygiene</string>
+    <string name="cg60">Medications</string>
+    <string name="cg70">Dairy</string>
+    <string name="cg80">Meat, fish, eggs</string>
+    <string name="cg90">Drinks, juices</string>
+    <string name="cg100">Footwear</string>
+    <string name="cg110">Clothes</string>
+    <string name="cg120">Household products</string>
+    <string name="cg130">Fruits, vegetables, pickles</string>
+    <string name="cg140">Bread, pastry, sweets</string>
+    <string name="cg150">Electronics</string>
     <string name="cg9000">Other</string>
 </resources>

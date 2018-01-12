@@ -2,7 +2,6 @@ package com.groundsoft.dean.shoppinglist.Models;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.text.Html;
 import android.text.Spanned;
 
 import com.groundsoft.dean.shoppinglist.R;
@@ -103,11 +102,23 @@ public class Ctgrs {
         return pos;
     }
 
-    public String getName(ArrayList<Ctgrs> categories, Integer categoryId){
-        String result="";
+    public String getName(ArrayList<Ctgrs> categories, Integer categoryId) {
+        String result = "";
         for (int i = 0; i < categories.size(); i++) {
             if (categories.get(i).categoryOrder.equals(categoryId)) {
                 result = categories.get(i).categoryName;
+                break;
+            }
+        }
+        return result;
+
+    }
+
+    public Integer getId(ArrayList<Ctgrs> categories, Integer categoryId) {
+        Integer result = -1;
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).categoryOrder.equals(categoryId)) {
+                result = i;
                 break;
             }
         }

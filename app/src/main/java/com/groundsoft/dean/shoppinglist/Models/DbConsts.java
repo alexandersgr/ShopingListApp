@@ -8,8 +8,6 @@ class DbConsts {
 
     static void createAll (SQLiteDatabase db){
 
-        //CREATE TABLE IF NOT EXISTS
-
         String query = "Create table " + Lists.TABLE_LISTS + " (" +
                 Lists.TABLE_LISTS_KEY_ID + " integer primary key, " +
                 Lists.TABLE_LISTS_KEY_NAME + " text, " +
@@ -21,8 +19,8 @@ class DbConsts {
                 Items.TABLE_ITEMS_LIST_ID + " integer, " +
                 Items.TABLE_ITEMS_CATEGORY_ID + " integer, " +
                 Items.TABLE_ITEMS_KEY_NAME + " text, " +
-                Items.TABLE_ITEMS_KEY_PRICE + " integer, " +
-                Items.TABLE_ITEMS_KEY_QUANTITY + " integer, " +
+                Items.TABLE_ITEMS_KEY_PRICE + " float, " +
+                Items.TABLE_ITEMS_KEY_QUANTITY + " float, " +
                 Items.TABLE_ITEMS_KEY_CHECKED + " integer, " +
                 Items.TABLE_ITEMS_KEY_DATE + " integer)";
         db.execSQL(query2);

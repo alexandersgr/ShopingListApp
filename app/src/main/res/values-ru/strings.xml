@@ -11,9 +11,11 @@
     <string name="new_item_price_placeholder">Цена</string>
     <string name="action_test1">тест xml</string>
     <string name="new_item_dialog_title">Добавить</string>
-    <string name="main_list_ms_menu_title">Select Lists</string>
-    <string name="main_list_ms_menu_subtitle1">One list selected</string>
-    <string name="main_list_ms_menu_subtitle2">lists selected</string>
+    <string name="main_list_ms_menu_title">Выберите списки</string>
+    <string name="main_list_ms_menu_subtitle1">Один выбран</string>
+    <string name="main_list_ms_menu_subtitle2">списков выбрано</string>
+    <string name="update_item_dialog_title">Редактировать</string>
+    <string name="update_item_dialog_save_btn">Сохранить</string>
 
 
 </resources>

@@ -13,4 +13,6 @@
     <string name="main_list_ms_menu_title">Select Lists</string>
     <string name="main_list_ms_menu_subtitle1">One list selected</string>
     <string name="main_list_ms_menu_subtitle2">lists selected</string>
+    <string name="update_item_dialog_title">Edit</string>
+    <string name="update_item_dialog_save_btn">Save</string>
 </resources>

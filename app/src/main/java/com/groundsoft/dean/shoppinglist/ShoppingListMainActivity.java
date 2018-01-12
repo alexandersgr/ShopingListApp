@@ -225,7 +225,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         for (int n = 0; n <= 5; n++) {
             int b = n + 14;
             for (int i = 0; i <= 10; i++) {
-                it.addItemTest(b, (i % 4) * 10 + 10, "Item of list " + b + " #" + i, 0, 1, i % 2,
+                it.addItemTest(b, (i % 4) * 10 + 10, "Item of list " + b + " #" + i, 0f, 1f, i % 2,
                         (int) (long) ((x / 1000) + i * 10000));
             }
         }

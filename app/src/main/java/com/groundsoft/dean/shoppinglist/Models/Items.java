@@ -69,7 +69,7 @@ public class Items extends SQLiteOpenHelper {
         //db.close();
     }
 
-    public Integer addItem(Integer listid, String name, Integer price, Integer quantity) {
+    public Integer addItem(Integer listid, String name, Float price, Float quantity) {
         //SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues vals = new ContentValues();
@@ -85,7 +85,7 @@ public class Items extends SQLiteOpenHelper {
         return result;
     }
 
-    public Integer addItemTest(Integer listid, Integer categoryid, String name, Integer price, Integer quantity, Integer checked, Integer date) {
+    public Integer addItemTest(Integer listid, Integer categoryid, String name, Float price, Float quantity, Integer checked, Integer date) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues vals = new ContentValues();
@@ -106,6 +106,7 @@ public class Items extends SQLiteOpenHelper {
 
     public Spanned getFirstItems(Integer listid, Integer limit) {
         String result = "";
+        //TODO: массив и соединение по ,
 
         //ArrayList items = new ArrayList<Items>();
         String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " limit " + limit;
@@ -184,8 +185,8 @@ public class Items extends SQLiteOpenHelper {
             item.listid = cursor.getInt(1);
             item.categoryid = cursor.getInt(2);
             item.name = cursor.getString(3);
-            item.price = cursor.getInt(4);
-            item.quantity = cursor.getInt(5);
+            item.price = cursor.getFloat(4);
+            item.quantity = cursor.getFloat(5);
             item.checked = cursor.getInt(6);
             item.date = cursor.getInt(7);
 
@@ -202,4 +203,18 @@ public class Items extends SQLiteOpenHelper {
         String query = "delete from " + TABLE_ITEMS + " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
         db1.execSQL(query);
     }
+
+
+
+    public void updateItem(Integer itemId, Integer categoryOrder, String name, Float itemprice, Float itemquontity) {
+        String query = "update " + TABLE_ITEMS + " set " +
+                TABLE_ITEMS_CATEGORY_ID + "=" + categoryOrder +", " +
+                TABLE_ITEMS_KEY_NAME + "=" + name +", " +
+                TABLE_ITEMS_KEY_PRICE + "=" + itemprice +", " +
+                TABLE_ITEMS_KEY_QUANTITY + "=" + itemquontity +", " +
+                " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
+        db1.execSQL(query);
+    }
+
+
 }
