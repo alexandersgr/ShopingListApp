@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.groundsoft.dean.shoppinglist.ShoppingListMainActivity;
+
 import java.util.ArrayList;
 
 public class Items extends SQLiteOpenHelper {
@@ -30,8 +32,15 @@ public class Items extends SQLiteOpenHelper {
     static final String TABLE_ITEMS_KEY_CHECKED = "checked";
     static final String TABLE_ITEMS_KEY_DATE = "date";
 
+    SQLiteDatabase db1;
+
     public Items(Context context) {
         super(context, DbConsts.DATABASE_NAME, null, DbConsts.DATABASE_VERSION);
+
+        if (context != null) {
+            db1 = ShoppingListMainActivity.dba;
+        }
+
     }
 
     @Override
@@ -47,21 +56,21 @@ public class Items extends SQLiteOpenHelper {
 
 
     public void updateItemCheckedStatus(Integer itemId, Integer checked) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getWritableDatabase();
 
         String query = "update " + TABLE_ITEMS +
                 " set " + TABLE_ITEMS_KEY_CHECKED + "=" + checked +
                 " where " + TABLE_ITEMS_KEY_ID + " = " + itemId;
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db1.rawQuery(query, null);
         cursor.moveToFirst();
         cursor.close();
 
-        db.close();
+        //db.close();
     }
 
     public Integer addItem(Integer listid, String name, Integer price, Integer quantity) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues vals = new ContentValues();
         vals.put(TABLE_ITEMS_LIST_ID, listid);
@@ -70,8 +79,8 @@ public class Items extends SQLiteOpenHelper {
         vals.put(TABLE_ITEMS_KEY_QUANTITY, quantity);
         vals.put(TABLE_ITEMS_KEY_CHECKED, 0);
 
-        Integer result = (int) db.insert(TABLE_ITEMS, null, vals);
-        db.close();
+        Integer result = (int) db1.insert(TABLE_ITEMS, null, vals);
+        //db1.close();
 
         return result;
     }
@@ -101,8 +110,8 @@ public class Items extends SQLiteOpenHelper {
         //ArrayList items = new ArrayList<Items>();
         String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " limit " + limit;
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+
+        Cursor cursor = db1.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
             /*
@@ -134,8 +143,8 @@ public class Items extends SQLiteOpenHelper {
                 " where " + TABLE_ITEMS_LIST_ID + " = " + listid +
                 " order by " + TABLE_ITEMS_CATEGORY_ID + " asc, " + TABLE_ITEMS_KEY_DATE + " desc";
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db1.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
             Items item = new Items(null);
@@ -157,4 +166,40 @@ public class Items extends SQLiteOpenHelper {
         return items;
     }
 
+    public ArrayList<OneItem> getItems2(Integer listid) {
+        ArrayList items = new ArrayList<OneItem>();
+
+        //String query = "select * from " + TABLE_ITEMS + " where " + TABLE_ITEMS_LIST_ID + " = " + listid + " order by " + TABLE_ITEMS_KEY_DATE + " desc";
+
+        String query = "select * from " + TABLE_ITEMS +
+                " where " + TABLE_ITEMS_LIST_ID + " = " + listid +
+                " order by " + TABLE_ITEMS_CATEGORY_ID + " asc, " + TABLE_ITEMS_KEY_DATE + " desc";
+
+        //SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db1.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            OneItem item = new OneItem();
+            item.id = cursor.getInt(0);
+            item.listid = cursor.getInt(1);
+            item.categoryid = cursor.getInt(2);
+            item.name = cursor.getString(3);
+            item.price = cursor.getInt(4);
+            item.quantity = cursor.getInt(5);
+            item.checked = cursor.getInt(6);
+            item.date = cursor.getInt(7);
+
+
+            items.add(item);
+        }
+
+        cursor.close();
+
+        return items;
+    }
+
+    public void dropItem(Integer itemId){
+        String query = "delete from " + TABLE_ITEMS + " where " + TABLE_ITEMS_KEY_ID + "=" + itemId;
+        db1.execSQL(query);
+    }
 }

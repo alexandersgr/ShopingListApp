@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ItemsOfList"
+            android:name=".ItemsOfListActivity"
             android:label="@string/title_activity_items_of_list"
             android:parentActivityName=".ShoppingListMainActivity"
             android:theme="@style/AppTheme.NoActionBar">

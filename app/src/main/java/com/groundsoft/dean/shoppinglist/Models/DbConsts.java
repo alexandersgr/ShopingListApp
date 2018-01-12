@@ -27,10 +27,10 @@ class DbConsts {
                 Items.TABLE_ITEMS_KEY_DATE + " integer)";
         db.execSQL(query2);
 
-        String query3 = "Create table " + Categories.TABLE_CATEGORIES + " (" +
-                Categories.TABLE_CATEGORIES_KEY_ID + " integer primary key, " +
-                Categories.TABLE_CATEGORIES_KEY_NAME + " text, " +
-                Categories.TABLE_CATEGORIES_KEY_ORDER + " integer)";
+        String query3 = "Create table " + Categories1.TABLE_CATEGORIES + " (" +
+                Categories1.TABLE_CATEGORIES_KEY_ID + " integer primary key, " +
+                Categories1.TABLE_CATEGORIES_KEY_NAME + " text, " +
+                Categories1.TABLE_CATEGORIES_KEY_ORDER + " integer)";
         db.execSQL(query3);
 
         String query4 = "Create table " + DefItems.TABLE_DEFITEMS + " (" +
@@ -44,7 +44,7 @@ class DbConsts {
 
     static void upgradeAll(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + Items.TABLE_ITEMS);
-        db.execSQL("drop table if exists " + Categories.TABLE_CATEGORIES);
+        db.execSQL("drop table if exists " + Categories1.TABLE_CATEGORIES);
         db.execSQL("drop table if exists " + Lists.TABLE_LISTS);
         db.execSQL("drop table if exists " + DefItems.TABLE_DEFITEMS);
         createAll(db);

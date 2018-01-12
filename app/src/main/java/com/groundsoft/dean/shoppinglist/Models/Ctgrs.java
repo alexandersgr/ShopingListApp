@@ -103,5 +103,17 @@ public class Ctgrs {
         return pos;
     }
 
+    public String getName(ArrayList<Ctgrs> categories, Integer categoryId){
+        String result="";
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).categoryOrder.equals(categoryId)) {
+                result = categories.get(i).categoryName;
+                break;
+            }
+        }
+        return result;
+
+    }
+
 
 }

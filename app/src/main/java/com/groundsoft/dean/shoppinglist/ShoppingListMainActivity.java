@@ -1,10 +1,9 @@
 package com.groundsoft.dean.shoppinglist;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,23 +15,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
-import com.groundsoft.dean.shoppinglist.Models.Categories;
+import com.groundsoft.dean.shoppinglist.Models.Categories1;
 import com.groundsoft.dean.shoppinglist.Models.DefItems;
 import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import com.groundsoft.dean.shoppinglist.Models.OneList;
+import com.groundsoft.dean.shoppinglist.MultiChoiceModeListeners.MainListMultiChoiceModeListener;
 
 
 public class ShoppingListMainActivity extends AppCompatActivity {
@@ -42,25 +36,13 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     private MainListAdapter mla;
     private boolean needRefresh = false;
     private Toolbar toolbar;
+    public static SQLiteDatabase dba;
 
-    public View.OnClickListener listOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            listOnClick(v);
-        }
-    };
 
     private AdapterView.OnItemClickListener listOnItemClick = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //CheckedTextView v = (CheckedTextView) view;
-            //TextView tv = (TextView) findViewById(R.id.textView4);
-
-            //listName.getTag().toString()
-            //tv.setText(v.getText());
-
-            Integer listId = ((Lists)mla.getItem(position)).id;
-            openListActivity(listId);
+            openListActivity(((OneList) mla.getItem(position)).id);
         }
     };
 
@@ -74,48 +56,26 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        //ActionBar actionBar = getActionBar();
-        //actionBar.hide();
-
-
-
-
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
-        //fillMainList();
-
         Lists li = new Lists(this);
-        ArrayList<Lists> lists = li.getAllLists();
 
+        dba = li.getDb();
+        ArrayList<OneList> lists = li.getAllLists();
 
-        mla = new MainListAdapter(this, lists, listOnClick);
-
+        mla = new MainListAdapter(this, lists);
         mlist = (ListView) findViewById(R.id.list);
 
 
-
+        MainListMultiChoiceModeListener modeListener =  new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
 
         mlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        mlist.setMultiChoiceModeListener(new ModeCallback());
+        mlist.setMultiChoiceModeListener(modeListener);
         mlist.setOnItemClickListener(listOnItemClick);
         mlist.setAdapter(mla);
 
-
-
-        String[] mStrings = new String[]{"one","two","three"};
+        //String[] mStrings = new String[]{"one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three","one", "two", "three"};
         //mlist.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, mStrings));
 
-
     }
-
 
 
     protected void onResume() {
@@ -123,13 +83,15 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         if (needRefresh) {
             mla.reloadLists();
-            mla.notifyDataSetChanged();
             needRefresh = false;
         }
+        mla.notifyDataSetChanged();
         //fillMainList();
     }
 
     public void fillMainList() {
+
+        /*
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
         colors[1] = Color.parseColor("#eeeeee"); //55336699
@@ -174,22 +136,13 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
         li.close();
         it.close();
+
+        */
     }
 
-    public void listOnClick(View view) {
-        //TextView listName = (TextView) view.findViewById(R.id.listName);
-
-        //CheckedTextView v = (CheckedTextView) view;
-        //TextView tv = (TextView) findViewById(R.id.textView4);
-
-        //listName.getTag().toString()
-        //tv.setText(v.getText());
-
-        //openListActivity((Integer) listName.getTag());
-    }
 
     public void openListActivity(Integer listId) {
-        Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfList.class);
+        Intent myIntent = new Intent(ShoppingListMainActivity.this, ItemsOfListActivity.class);
         myIntent.putExtra("listid", listId); //Optional parameters
         ShoppingListMainActivity.this.startActivity(myIntent);
 
@@ -258,7 +211,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     public void fillDb(View v) {
         Lists li = new Lists(this);
         Items it = new Items(this);
-        Categories cat = new Categories(this);
+        Categories1 cat = new Categories1(this);
         DefItems di = new DefItems(this);
 
         long x = System.currentTimeMillis() - 60000000;
@@ -358,7 +311,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
     }
 
 
-    private class ModeCallback implements ListView.MultiChoiceModeListener {
+    private class ModeCallback1 implements ListView.MultiChoiceModeListener {
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             toolbar.setVisibility(View.GONE);
@@ -401,8 +354,8 @@ public class ShoppingListMainActivity extends AppCompatActivity {
             //(Lists)mlist.getItemAtPosition(position);
             //mlist.findViewById((int) id).
             //mla.notifyDataSetChanged();
-            if (mlist.isItemChecked(3)){
-                mlist.setItemChecked(3,false);
+            if (mlist.isItemChecked(3)) {
+                mlist.setItemChecked(3, false);
             }
         }
 
