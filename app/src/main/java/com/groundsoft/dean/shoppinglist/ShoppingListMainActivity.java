@@ -279,36 +279,30 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            //TextView tv = (TextView) findViewById(R.id.textView4);
-            //tv.setText("options");
-            return true;
-        }
-
         if (id == R.id.action_test1) {
-
-            //TextView tv = (TextView) findViewById(R.id.textView4);
-            //tv.setText("test1");
-
             xmltest();
-
-            //R.xml.ctgs
             return true;
         }
 
+        if (id == R.id.action_defitems) {
+            //TODO: Редактор списка пользовательских айтемов
+            return true;
+        }
+
+        if (id == R.id.action_settings) {
+            //TODO: Настройки
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
 
     void xmltest() {
-        //TextView tv = (TextView) findViewById(R.id.textView4);
         Snackbar.make(null, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-        //test
     }
+
 
     public void listNameEditDialog(){
 

@@ -2,16 +2,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.groundsoft.dean.shoppinglist.ShoppingListMainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_test1"
-        android:orderInCategory="100"
-        android:title="@string/action_test1"
-        app:showAsAction="never" />
-
+        android:icon="@drawable/ic_more_vert_black_24px"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_test1"
+                android:orderInCategory="100"
+                android:title="@string/action_test1"
+                android:visible="false" />
+            <item
+                android:id="@+id/action_defitems"
+                android:icon="@drawable/ic_star_black_24px"
+                android:orderInCategory="100"
+                android:title="@string/action_defitems" />
+            <item
+                android:id="@+id/action_settings"
+                android:icon="@drawable/ic_settings_black_24px"
+                android:orderInCategory="101"
+                android:title="@string/action_settings" />
+        </menu>
+    </item>
 </menu>

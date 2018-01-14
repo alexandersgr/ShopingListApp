@@ -68,6 +68,8 @@ public class DfItms {
             e.printStackTrace();
         }
 
+        //TODO: пользовательские айтемы: прибавить к этому список пользовательских айтемов
+
         return defitems;
     }
 

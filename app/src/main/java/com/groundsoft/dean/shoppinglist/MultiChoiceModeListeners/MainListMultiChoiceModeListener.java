@@ -55,11 +55,11 @@ public class MainListMultiChoiceModeListener implements ListView.MultiChoiceMode
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                //TODO: edit list name
+                //TODO: edit list name dialog
                 ((ShoppingListMainActivity)context).listNameEditDialog();
                 break;
             case R.id.copy:
-                //TODO: copy list
+                //TODO: copy list dialog
                 break;
             case R.id.delete:
                 mla.dropChecked();

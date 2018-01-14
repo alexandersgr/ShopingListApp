@@ -16,6 +16,7 @@
     <string name="main_list_ms_menu_subtitle2">списков выбрано</string>
     <string name="update_item_dialog_title">Редактировать</string>
     <string name="update_item_dialog_save_btn">Сохранить</string>
+    <string name="action_defitems">Edit my favorite goods</string>
 
 
 </resources>

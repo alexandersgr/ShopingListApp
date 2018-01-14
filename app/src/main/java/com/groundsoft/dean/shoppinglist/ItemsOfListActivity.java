@@ -430,6 +430,8 @@ public class ItemsOfListActivity extends AppCompatActivity {
         it.addItemTest(currentList, categoryOrder, name, itemprice, itemquontity, 0, (int) date);
         it.close();
 
+        //TODO: пользовательские айтемы: добавить также в таблицу дефолтных айтемов
+
         //categorizedList(currentList);
 
         ila.refreshList();
