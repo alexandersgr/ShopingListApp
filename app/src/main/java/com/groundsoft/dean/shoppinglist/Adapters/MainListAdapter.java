@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 public class MainListAdapter extends BaseAdapter {
 
     private ArrayList<OneList> lists;
@@ -32,20 +33,6 @@ public class MainListAdapter extends BaseAdapter {
 
         it = new Items(context);
 
-        //long date = System.currentTimeMillis() / 1000;
-
-        //lists = new ArrayList<OneList>();
-
-/*
-        for (int i = 0; i < 30; i++) {
-            OneList testList = new OneList();
-            testList.date = (int) date;
-            testList.id = i;
-            testList.listname = "List #" + i;
-
-            lists.add(testList);
-        }
-        */
     }
 
     @Override
@@ -83,9 +70,10 @@ public class MainListAdapter extends BaseAdapter {
     }
 
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
         int[] colors = new int[2];
 
         colors[0] = Color.parseColor("#ffffff"); //559966CC
@@ -94,6 +82,7 @@ public class MainListAdapter extends BaseAdapter {
         ListItemViewHolder vh;
 
         View item = convertView;
+
         if (item == null) {
             item = lInflater.inflate(R.layout.inflable_lists, parent, false);
 
@@ -111,7 +100,6 @@ public class MainListAdapter extends BaseAdapter {
 
         OneList currentItem = lists.get(position);
 
-        //TextView listName = (TextView) item.findViewById(R.id.listName);
         vh.listName.setText(currentItem.listname);
         vh.listName.setTag(currentItem.id);
 
@@ -121,24 +109,14 @@ public class MainListAdapter extends BaseAdapter {
             vh.listName.setTextColor(Color.parseColor("#000000"));
         }
 
-        //TextView listDate = (TextView) item.findViewById(R.id.listDate);
-        long dv = Long.valueOf(currentItem.date) * 1000;// its need to be in milisecond
+        long dv = Long.valueOf(currentItem.date) * 1000;
         Date df = new java.util.Date(dv);
         String vv = new SimpleDateFormat("H:mm d MMM yy").format(df);
         vh.listDate.setText(vv);
 
-        //TextView listItems = (TextView) item.findViewById(R.id.listItems);
         vh.listItems.setText(it.getFirstItems(currentItem.id, 3));
 
-        //item.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
         item.setBackgroundColor(colors[position % 2]);
-
-        //item.setOnClickListener(listOnClick);
-
-
-        //it.close();
-
-        ////////////
 
         return item;
     }
@@ -159,6 +137,7 @@ public class MainListAdapter extends BaseAdapter {
         for (int i = 0; i < lists.size(); i++) {
             if (lists.get(i).checked) {
                 //lists.get(i).drop();
+                //TODO: удаление листов
                 lists.remove(i);
                 i -= 1;
             }

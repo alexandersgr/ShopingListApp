@@ -24,7 +24,11 @@
     <ListView
         android:id="@+id/itemsList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:headerDividersEnabled="true"
+
+
+        tools:layout_editor_absoluteY="125dp">
 
 
     </ListView>

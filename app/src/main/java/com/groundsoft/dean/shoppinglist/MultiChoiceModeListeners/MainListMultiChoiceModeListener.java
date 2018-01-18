@@ -63,6 +63,7 @@ public class MainListMultiChoiceModeListener implements ListView.MultiChoiceMode
                 break;
             case R.id.delete:
                 mla.dropChecked();
+                mode.finish();
                 //Toast.makeText(ShoppingListMainActivity.this, "del " + "", Toast.LENGTH_SHORT).show();
                 break;
             default:

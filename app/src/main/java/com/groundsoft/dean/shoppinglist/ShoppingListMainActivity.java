@@ -8,17 +8,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-import java.util.ArrayList;
 
 import com.groundsoft.dean.shoppinglist.Adapters.MainListAdapter;
 import com.groundsoft.dean.shoppinglist.Models.Categories1;
@@ -27,6 +23,10 @@ import com.groundsoft.dean.shoppinglist.Models.Items;
 import com.groundsoft.dean.shoppinglist.Models.Lists;
 import com.groundsoft.dean.shoppinglist.Models.OneList;
 import com.groundsoft.dean.shoppinglist.MultiChoiceModeListeners.MainListMultiChoiceModeListener;
+
+import java.util.ArrayList;
+
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class ShoppingListMainActivity extends AppCompatActivity {
@@ -65,7 +65,7 @@ public class ShoppingListMainActivity extends AppCompatActivity {
         mlist = (ListView) findViewById(R.id.list);
 
 
-        MainListMultiChoiceModeListener modeListener =  new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
+        MainListMultiChoiceModeListener modeListener = new MainListMultiChoiceModeListener(this, getMenuInflater(), this, toolbar, mla, mlist);
 
         mlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         mlist.setMultiChoiceModeListener(modeListener);
@@ -267,7 +267,6 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds inflable_items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_shopping_list_main, menu);
         return true;
     }
@@ -299,12 +298,17 @@ public class ShoppingListMainActivity extends AppCompatActivity {
 
 
     void xmltest() {
-        Snackbar.make(null, "Replace with your own action", Snackbar.LENGTH_LONG)
+        int x = 15;
+        Snackbar.make(null, String.valueOf(x), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+
+
+        ShortcutBadger.applyCount(this, x);
+
     }
 
 
-    public void listNameEditDialog(){
+    public void listNameEditDialog() {
 
     }
 
